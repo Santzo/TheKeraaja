@@ -21,4 +21,9 @@ public interface IMainMenuHandler
     void OnDown(Transform trans);
     void OnUp(Transform trans);
 }
+public interface IDropDownHandler
+{
+    void OnDropDown(Transform trans, string[] options);
+    void OnDropUp(Transform trans, string[] options);
+}
 

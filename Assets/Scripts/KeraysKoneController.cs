@@ -21,8 +21,8 @@ public class KeraysKoneController : MonoBehaviour
     }
     private void Start()
     {
-    
         Events.applyForce += ApplyForwardForce;
+
     }
     private void FixedUpdate()
     {

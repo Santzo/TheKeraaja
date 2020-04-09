@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class KaytavaManager : MonoBehaviour
 {
-    TextMeshProUGUI timer, seuraava, etaisyys;
+    TextMeshProUGUI timer, seuraava, etaisyys, fps;
     Transform indicator, player;
     Transform[] kaytavat;
     float time = 0f;
@@ -33,6 +33,7 @@ public class KaytavaManager : MonoBehaviour
     {
         keraysera = new Keraysera[] { new Keraysera { kaytava = 1, paikka = 117 }, new Keraysera { kaytava = 2, paikka = 204 }, new Keraysera { kaytava = 2, paikka = 329}, new Keraysera { kaytava = 5, paikka = 118 } };
         timer = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
+        fps = GameObject.Find("FPS").GetComponent<TextMeshProUGUI>();
         player = GameObject.Find("Kerayskone").transform.Find("Rullakko");
         seuraava = GameObject.Find("Kerayspaikka").GetComponent<TextMeshProUGUI>();
         etaisyys = GameObject.Find("Etaisyys").GetComponent<TextMeshProUGUI>();
@@ -70,6 +71,7 @@ public class KaytavaManager : MonoBehaviour
         float dist = Vector2.Distance(pl, dest);
         etaisyys.text = string.Format("{0:0.0}m", dist);
         if (dist < 2f) SeuraavaRivi();
+        fps.text = (1f / Time.deltaTime).ToString("F1");
     }
 
     private void UpdateTime()
@@ -79,6 +81,7 @@ public class KaytavaManager : MonoBehaviour
         float seconds = Mathf.Floor(time - minutes * 60);
         float milliseconds = Mathf.Floor((time % 1) * 10f);
         timer.text = string.Format("{0:00}:{1:00}.{2:0}", minutes, seconds, milliseconds);
+        
     }
 
     private void InitializeNumbers()
