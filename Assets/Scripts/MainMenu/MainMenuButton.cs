@@ -7,8 +7,9 @@ using UnityEngine.UI;
 public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     IMainMenuHandler menuHandler;
-    Animator animator;
     Image image;
+    internal Color oriColor;
+    public bool colorStaysWhenSelected;
 
     void Awake()
     {
@@ -17,31 +18,27 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             Debug.Log("No Main Menu handler found for " + name);
         }
-        animator = GetComponentInParent<Animator>();
         image = GetComponentInParent<Image>();
+        image.enabled = true;
+        oriColor = image.color;
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         menuHandler.OnDown(transform);
+        image.color = Settings.buttonPressed;
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        menuHandler.OnEnter(transform);
-        image.enabled = true;
-        animator.enabled = true;
-
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        menuHandler.OnExit(transform);
-        image.enabled = false;
-        animator.enabled = false;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         menuHandler.OnUp(transform);
+        if (!colorStaysWhenSelected) image.color = oriColor;
     }
 }

@@ -2,17 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Settings : MonoBehaviour
+public static class Settings
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public static int shadows = PlayerPrefs.GetInt("shadows", 0);
+    public static int sound = PlayerPrefs.GetInt("sound", 0);
+    public static Keraysera[] kerayserat = Resources.LoadAll<Keraysera>("Kerayserat");
+    public static Keraysera keraysera;
+    public static int resolution = PlayerPrefs.GetInt("resolution", 0);
+    public static string username = PlayerPrefs.GetString("username", "");
+    public static Color buttonPressed = new Color32(183, 119, 49, 183);
 
-    // Update is called once per frame
-    void Update()
+    public static void SaveSetting(string name, int value)
     {
-        
+        typeof(Settings).GetField(name).SetValue(null, value);
+        PlayerPrefs.SetInt(name, value);
+        Debug.Log(sound);
+    }
+    public static void NameChange(string newName)
+    {
+        PlayerPrefs.SetString("username", newName);
+        username = newName;
+        Debug.Log(newName);
     }
 }
+

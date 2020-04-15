@@ -91,7 +91,7 @@ Material:
     - _Glossiness: 0
     - _GlossinessSource: 0
     - _GlossyReflections: 0
-    - _Metallic: 0.917
+    - _Metallic: 0.89
     - _Mode: 3
     - _OcclusionStrength: 1
     - _Parallax: 0.02
@@ -99,7 +99,7 @@ Material:
     - _ReceiveShadows: 0
     - _SampleGI: 0
     - _Shininess: 0
-    - _Smoothness: 0.692
+    - _Smoothness: 0.46
     - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
     - _SpecSource: 0

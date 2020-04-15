@@ -19,7 +19,7 @@ public class KaytavaManager : MonoBehaviour
     int kaytava = 1;
     int hyllyPaikka = 124;
     int rivi = 0;
-    Keraysera[] keraysera;
+    KeraysLista[] keraysera;
 
     private void Awake()
     {
@@ -31,7 +31,7 @@ public class KaytavaManager : MonoBehaviour
     }
     private void Start()
     {
-        keraysera = new Keraysera[] { new Keraysera { kaytava = 1, paikka = 117 }, new Keraysera { kaytava = 2, paikka = 204 }, new Keraysera { kaytava = 2, paikka = 329}, new Keraysera { kaytava = 5, paikka = 118 } };
+        keraysera = Settings.keraysera.keraysLista;
         timer = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
         fps = GameObject.Find("FPS").GetComponent<TextMeshProUGUI>();
         player = GameObject.Find("Kerayskone").transform.Find("Rullakko");
@@ -47,7 +47,7 @@ public class KaytavaManager : MonoBehaviour
 
     private void SeuraavaRivi()
     {
-        Keraysera temp = keraysera[rivi];
+        KeraysLista temp = keraysera[rivi];
         PlaceIndicator(temp.kaytava, temp.paikka);
         rivi++;
         if (rivi >= keraysera.Length)
@@ -205,9 +205,4 @@ public class KaytavaManager : MonoBehaviour
             }
         }
     }
-}
-public struct Keraysera
-{
-    public int kaytava;
-    public int paikka;
 }

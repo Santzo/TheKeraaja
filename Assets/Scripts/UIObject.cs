@@ -29,16 +29,6 @@ public abstract class UIObject : MonoBehaviour, IUIObject
         handler.OnDown(transform);
     }
 
-    public virtual void OnPointerEnter(PointerEventData eventData)
-    {
-        handler.OnEnter(transform);
-    }
-
-    public virtual void OnPointerExit(PointerEventData eventData)
-    {
-        handler.OnExit(transform);
-    }
-
     public virtual void OnPointerUp(PointerEventData eventData)
     {
         handler.OnUp(transform);

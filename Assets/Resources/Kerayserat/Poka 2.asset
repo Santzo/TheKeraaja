@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55a1d2926f90dfa458ad1fb09619b37c, type: 3}
+  m_Name: Poka 2
+  m_EditorClassIdentifier: 
+  pokaName: Normipoka
+  description: "Peruspoka, jossa kohtalainen m\xE4\xE4r\xE4 ker\xE4tt\xE4v\xE4\xE4,
+    ja jonkun verran muita ker\xE4\xE4ji\xE4 k\xE4yt\xE4vill\xE4."
+  keraysLista:
+  - kaytava: 1
+    paikka: 124
+    maara: 3
+  - kaytava: 4
+    paikka: 105
+    maara: 2
+  - kaytava: 5
+    paikka: 230
+    maara: 1
+  - kaytava: 7
+    paikka: 316
+    maara: 5
