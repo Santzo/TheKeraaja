@@ -8,6 +8,7 @@ public static class Settings
     public static int sound = PlayerPrefs.GetInt("sound", 0);
     public static Keraysera[] kerayserat = Resources.LoadAll<Keraysera>("Kerayserat");
     public static Keraysera keraysera;
+    public static Kerayskone[] kerayskoneet = Resources.LoadAll<Kerayskone>("Kerayskoneet");
     public static int resolution = PlayerPrefs.GetInt("resolution", 0);
     public static string username = PlayerPrefs.GetString("username", "");
     public static Color buttonPressed = new Color32(183, 119, 49, 183);

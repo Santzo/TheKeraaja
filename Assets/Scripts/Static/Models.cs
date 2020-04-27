@@ -18,10 +18,3 @@ public class HighScoreEntry
     public string id;
 }
 
-public class KeraysKone
-{
-    public float speed;
-    public float acceleration;
-    public float turnRate;
-    public float braking;
-}

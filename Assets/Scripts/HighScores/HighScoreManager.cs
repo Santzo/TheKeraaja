@@ -2,10 +2,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -15,8 +17,11 @@ public class HighScoreManager : MonoBehaviour
     private bool _scoresLoaded;
     private static HighScoreManager _instance;
     public float lastRefresh = 0f;
+
+
     public Action<bool> OnScoresLoaded = delegate { };
     public List<HighScoreEntry> currentHighscores = new List<HighScoreEntry>();
+
 
     public bool ScoresLoaded
     {
@@ -31,12 +36,13 @@ public class HighScoreManager : MonoBehaviour
         }
     }
 
-    public static HighScoreManager instance
+    public static HighScoreManager Instance
     {
         get
         {
             if (_instance == null)
             {
+
                 var go = new GameObject();
                 _instance = go.AddComponent<HighScoreManager>();
                 DontDestroyOnLoad(go);
@@ -47,15 +53,15 @@ public class HighScoreManager : MonoBehaviour
 
     public static void GetHighScores()
     {
-        float timeSince = Time.time - instance.lastRefresh;
-        if (instance.currentHighscores == null || timeSince > 30f)
+        float timeSince = Time.time - Instance.lastRefresh;
+        if (Instance.currentHighscores == null || timeSince > 30f)
         {
-            instance.lastRefresh = Time.time;
-            instance.StartCoroutine(instance.GetScores());
+            Instance.lastRefresh = Time.time;
+            Instance.StartCoroutine(Instance.GetScores());
         }
         else
         {
-            instance.ScoresLoaded = true;
+            Instance.ScoresLoaded = true;
         }
     }
 
@@ -122,7 +128,7 @@ public class HighScoreManager : MonoBehaviour
     [RuntimeInitializeOnLoadMethod]
     static void Initialize()
     {
-        instance.name = "HighScoreManager";
+        Instance.name = "HighScoreManager";
     }
 }
 

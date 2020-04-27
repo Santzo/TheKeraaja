@@ -31,7 +31,7 @@ public class KaytavaManager : MonoBehaviour
     }
     private void Start()
     {
-        keraysera = Settings.keraysera.keraysLista;
+        keraysera = Settings.kerayserat[0].keraysLista;
         timer = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
         fps = GameObject.Find("FPS").GetComponent<TextMeshProUGUI>();
         player = GameObject.Find("Kerayskone").transform.Find("Rullakko");
@@ -80,7 +80,7 @@ public class KaytavaManager : MonoBehaviour
         float minutes = Mathf.Floor(time / 60);
         float seconds = Mathf.Floor(time - minutes * 60);
         float milliseconds = Mathf.Floor((time % 1) * 10f);
-        timer.text = string.Format("{0:00}:{1:00}.{2:0}", minutes, seconds, milliseconds);
+        timer.text = string.Format("{0:00}:{1:00},{2:0}", minutes, seconds, milliseconds);
         
     }
 

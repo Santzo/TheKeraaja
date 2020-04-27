@@ -13,6 +13,7 @@ public class UusiKerayseraHandler : MonoBehaviour, IMainMenuHandler
     RectTransform border;
     List<Image> images = new List<Image>();
     TextMeshProUGUI kuvausTeksti;
+    IMainMenuHandler mainMenu;
 
     public void OnDown(Transform trans)
     {
@@ -31,13 +32,19 @@ public class UusiKerayseraHandler : MonoBehaviour, IMainMenuHandler
         {
             highScores.SetActive(true);
         }
+        else if (trans.name == "Seuraava")
+        {
+            mainMenu.OnUp(null);
+        }
 
     }
 
     void Start()
     {
         //SceneManager.LoadScene("MainGame");
+        mainMenu = transform.parent.parent.Find("MainMenuHandler").GetComponent<IMainMenuHandler>();
         highScores = transform.Find("HighScoresPanel").gameObject;
+        highScores.SetActive(false);
         valintaLaatikko = transform.Find("Valinta").gameObject;
         border = valintaLaatikko.transform.Find("Border").GetComponent<RectTransform>();
         kuvausTeksti = transform.Find("Kuvaus").GetComponentInChildren<TextMeshProUGUI>();
