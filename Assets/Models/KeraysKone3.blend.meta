@@ -3,7 +3,17 @@ guid: f545fccf01f49134db45ccdb60d71305
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BodyOverlay
+    second: {fileID: 2100000, guid: 191233ee038a15d44b986b9396388755, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tail
+    second: {fileID: 2100000, guid: c854d6293bb2d0f4e95c57fc76403c8c, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

@@ -37,6 +37,7 @@ public class SelectKoneHandler : MonoBehaviour, IMainMenuHandler
     {
         if (trans.name == "Aloita")
         {
+            Settings.kerayskone = Settings.kerayskoneet[selected];
             startGame = SceneManager.LoadSceneAsync("MainGame");
             Events.onStartLoading();
             StartCoroutine(StartGame());

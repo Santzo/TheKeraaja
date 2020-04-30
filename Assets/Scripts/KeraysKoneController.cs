@@ -21,40 +21,39 @@ public class KeraysKoneController : MonoBehaviour
     }
     private void Start()
     {
+        var obj = Instantiate(Settings.kerayskone.keraysKone, transform, true);
+        obj.transform.localPosition = new Vector3(0f, 0f, -0f);
+        obj.transform.rotation = transform.rotation;
+        obj.transform.localScale = new Vector3(0.88f, 0.88f, 0.88f);
         Events.applyForce += ApplyForwardForce;
-
+        maxMoveSpeed = Settings.kerayskone.nopeus * 1.75f;
+        accelerationRate = Settings.kerayskone.kiihtyvyys * 17.5f;
+        decRotationRate = accRotationRate = Settings.kerayskone.kaantyvyys * 10f;
+        decRotationRate = Settings.kerayskone.jarrutus * 10f;
     }
     private void FixedUpdate()
     {
-        float targetSpeed = maxMoveSpeed * movement.y;
-        float accelerate = 0f;
+        float currentSpeed = Mathf.Abs(rb.velocity.x) + Mathf.Abs(rb.velocity.z);
+        float magnitude = rb.velocity.magnitude;
+        float targetSpeed = accelerationRate * movement.y + magnitude * 5f;
 
-        if (currentMoveSpeed < targetSpeed) accelerate = accelerationRate;
-        else accelerate = -accelerationRate;
-
-        if (movement.y <= 0f && currentMoveSpeed > 0) accelerate -= decelerationRate;
-        else if (movement.y >= 0f && currentMoveSpeed < 0) accelerate += decelerationRate;
-
-        currentMoveSpeed += accelerate;
-
-        float targetRot = maxRotationSpeed * movement.x;
-        float rotAccelerate = 0f;
-        if (currentRotationSpeed < targetRot) rotAccelerate = accRotationRate;
-        else rotAccelerate = -accRotationRate;
-
-        float speedEffect = 1.35f - (currentMoveSpeed / maxMoveSpeed);
-        rotAccelerate *= speedEffect;
-
-        if (movement.x > 0 && currentRotationSpeed < 20) rotAccelerate *= 2.5f;
-        else if (movement.x < 0 && currentRotationSpeed > -20) rotAccelerate *= 2.5f;
-
-        currentRotationSpeed += rotAccelerate;
-
-        if (currentMoveSpeed != 0)
+        if (movement.y != 0f)
         {
-            rb.velocity = transform.forward * currentMoveSpeed * Time.fixedDeltaTime;
+            if (movement.y > 0f) targetSpeed = Mathf.Max(targetSpeed, 90f + magnitude * 2f);
+            else targetSpeed = Mathf.Min(targetSpeed, -90f - magnitude * 2f);
+            if (magnitude > maxMoveSpeed)
+            {
+                float oppForce = magnitude - maxMoveSpeed;
+                rb.AddForce(-transform.forward * oppForce, ForceMode.Impulse);
+            }
+            else rb.AddForce(transform.forward * targetSpeed - rb.velocity, ForceMode.Force);
         }
-        rb.angularVelocity = new Vector3(0f, currentRotationSpeed * Time.fixedDeltaTime, 0f);
+        if (movement.x != 0f)
+        {
+            var torque = new Vector3(0f, 132.5f * movement.x, 0f);
+            rb.AddTorque(torque - rb.angularVelocity, ForceMode.Force);
+        }
+
     }
 
     public void ApplyForwardForce(Vector2 force)
