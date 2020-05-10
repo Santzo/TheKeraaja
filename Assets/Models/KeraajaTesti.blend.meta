@@ -1,14 +1,8 @@
 fileFormatVersion: 2
-guid: 8d8269c010bdf714da21ed11f88a8b44
+guid: c6a499070b8836c4b8074091095fa4f5
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable:
-  - first:
-      74: -623603649343465320
-    second: Walk
-  - first:
-      74: 4787742288682755051
-    second: PickUp
   - first:
       74: -623603649343465320
     second: Scene

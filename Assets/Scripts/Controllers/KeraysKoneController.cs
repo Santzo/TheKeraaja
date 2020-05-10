@@ -10,7 +10,7 @@ public class KeraysKoneController : MonoBehaviour
     Vector2 movement;
     WheelCollider[] wheels;
     Vector3 velocity = Vector3.zero;
-    Transform[] rullakot;
+    internal Transform[] rullakot;
     public float testiRot = 0.1f;
     public float accelerationRate, accRotationRate;
     [SerializeField]
@@ -36,6 +36,11 @@ public class KeraysKoneController : MonoBehaviour
         accelerationRate = Settings.kerayskone.kiihtyvyys * 17.5f;
         decRotationRate = accRotationRate = Settings.kerayskone.kaantyvyys * 3.5f;
         decRotationRate = Settings.kerayskone.jarrutus * 10f;
+        rullakot = new Transform[3];
+        for (int i = 0; i < rullakot.Length; i++)
+        {
+            rullakot[i] = transform.GetChild(i);
+        }
     }
     private void FixedUpdate()
     {

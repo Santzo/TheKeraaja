@@ -24,10 +24,11 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
 
-        Vector3 target = player.TransformPoint(playerOffset);
+        Vector3 target = !Events.isPlayerCollecting ? player.TransformPoint(playerOffset): player.TransformPoint(playerOffset * 0.82f);
         float playerTurnSpeed = Mathf.Abs(playerBody.angularVelocity.y)+ 1f;
         cameraFollowSpeed = 0.08f - playerBody.velocity.magnitude * 0.004f;
-        float followSpeed = Mathf.Clamp(cameraFollowSpeed * playerTurnSpeed * 0.125f, 0.02f, maxFollowSpeed);
+        float followSpeed = !Events.isPlayerCollecting ? Mathf.Clamp(cameraFollowSpeed * playerTurnSpeed * 0.125f, 0.02f, maxFollowSpeed)
+                                                        : 0.9f;
         transform.position = Vector3.SmoothDamp(transform.position, target, ref reference, followSpeed);
         Quaternion targetRot = new Quaternion();
         targetRot.eulerAngles = new Vector3(transform.eulerAngles.x, player.eulerAngles.y, transform.eulerAngles.z);

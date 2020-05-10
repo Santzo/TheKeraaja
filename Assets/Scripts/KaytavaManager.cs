@@ -71,7 +71,7 @@ public class KaytavaManager : MonoBehaviour
         //Debug.Log(xDistance);
         var a = Vector3.Cross(player.forward, currentKeraysTarget);
         var test = Vector3.Dot(a, player.up);
-        Debug.Log(test);
+        Debug.DrawLine(KeraysKoneController.instance.transform.position, a, Color.cyan);
         if (rb.velocity.magnitude <= acceptedVel && dist <= acceptedDist && !Events.isPlayerCloseToCollectionPoint)
         {
             Events.isPlayerCloseToCollectionPoint = true;
@@ -228,8 +228,7 @@ public class KaytavaManager : MonoBehaviour
             }
         }
         indicator.transform.position = new Vector3(indicatorOri.x + xOffset, indicatorOri.y, indicatorOri.z + offset);
-        var multi = kaytava * osoite % 2 != 0 ? indicator.transform.right : -indicator.transform.right;
+        var multi = kaytava * osoite % 2 != 0 ? indicator.transform.right: -indicator.transform.right;
         currentKeraysTarget = indicator.transform.position + multi;
-        Debug.DrawLine(indicator.transform.position, currentKeraysTarget, Color.cyan, 10f);
     }
 }
