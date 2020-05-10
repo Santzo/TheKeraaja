@@ -9,8 +9,8 @@ public class CameraController : MonoBehaviour
     Vector3 reference = Vector3.zero;
     Transform player;
     Rigidbody playerBody;
-    float cameraTurnSpeed = 500f;
-    float cameraFollowSpeed = 0.08f;
+    public float cameraTurnSpeed = 500f;
+    float cameraFollowSpeed = 0.05f;
     float maxFollowSpeed;
 
     private void Start()
@@ -26,8 +26,8 @@ public class CameraController : MonoBehaviour
 
         Vector3 target = player.TransformPoint(playerOffset);
         float playerTurnSpeed = Mathf.Abs(playerBody.angularVelocity.y)+ 1f;
-        float followSpeed = Mathf.Clamp(cameraFollowSpeed * playerTurnSpeed * 0.75f, cameraFollowSpeed, maxFollowSpeed);
-    
+        cameraFollowSpeed = 0.08f - playerBody.velocity.magnitude * 0.004f;
+        float followSpeed = Mathf.Clamp(cameraFollowSpeed * playerTurnSpeed * 0.125f, 0.02f, maxFollowSpeed);
         transform.position = Vector3.SmoothDamp(transform.position, target, ref reference, followSpeed);
         Quaternion targetRot = new Quaternion();
         targetRot.eulerAngles = new Vector3(transform.eulerAngles.x, player.eulerAngles.y, transform.eulerAngles.z);

@@ -8,17 +8,22 @@ public class KaytavaManager : MonoBehaviour
 {
     TextMeshProUGUI timer, seuraava, etaisyys, fps;
     Transform indicator, player;
+    Rigidbody rb;
     Transform[] kaytavat;
     float time = 0f;
     Vector3 indicatorOri;
+    public static Vector3 currentKeraysTarget;
     Canvas canvas;
     float zSpace = 1.514f;
     float kaytavaVali = 9.0f;
     float extraJump = 0.108f;
     float hyllyvali = 28.98f;
+    float osoiteVali = 3f;
     int kaytava = 1;
     int hyllyPaikka = 124;
     int rivi = 0;
+    bool isCloseToKeraysPoint = false;
+    float acceptedVel = 1f, acceptedDist = 2f;
     KeraysLista[] keraysera;
 
     private void Awake()
@@ -34,7 +39,8 @@ public class KaytavaManager : MonoBehaviour
         keraysera = Settings.kerayserat[0].keraysLista;
         timer = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
         fps = GameObject.Find("FPS").GetComponent<TextMeshProUGUI>();
-        player = GameObject.Find("Kerayskone").transform.Find("Rullakko");
+        player = GameObject.Find("Kerayskone").transform;
+        rb = player.GetComponent<Rigidbody>();
         seuraava = GameObject.Find("Kerayspaikka").GetComponent<TextMeshProUGUI>();
         etaisyys = GameObject.Find("Etaisyys").GetComponent<TextMeshProUGUI>();
         canvas = GameObject.Find("UI").GetComponent<Canvas>();
@@ -60,17 +66,37 @@ public class KaytavaManager : MonoBehaviour
     private void Update()
     {
         UpdateTime();
+        var dist = UpdateDistance();
+        //var xDistance = currentKeraysTarget.x - player.position.x;
+        //Debug.Log(xDistance);
+        var a = Vector3.Cross(player.forward, currentKeraysTarget);
+        var test = Vector3.Dot(a, player.up);
+        Debug.Log(test);
+        if (rb.velocity.magnitude <= acceptedVel && dist <= acceptedDist && !Events.isPlayerCloseToCollectionPoint)
+        {
+            Events.isPlayerCloseToCollectionPoint = true;
+            Events.onCloseToCollectionPoint(true);
+        }
+        if (rb.velocity.magnitude > acceptedVel || dist >= acceptedDist && Events.isPlayerCloseToCollectionPoint)
+        {
+            Events.isPlayerCloseToCollectionPoint = false;
+            Events.onCloseToCollectionPoint(false);
+        }
         if (Time.frameCount % 10 == 0)
-            UpdateDistance();
+            UpdateDistanceText(dist);
     }
 
-    private void UpdateDistance()
+    private float UpdateDistance()
     {
         Vector2 pl = new Vector2(player.position.x, player.position.z);
         Vector2 dest = new Vector2(indicator.position.x, indicator.position.z);
-        float dist = Vector2.Distance(pl, dest);
+        return Vector2.Distance(pl, dest);
+
+    }
+    private void UpdateDistanceText(float dist)
+    {
         etaisyys.text = string.Format("{0:0.0}m", dist);
-        if (dist < 2f) SeuraavaRivi();
+
         fps.text = (1f / Time.deltaTime).ToString("F1");
     }
 
@@ -81,7 +107,7 @@ public class KaytavaManager : MonoBehaviour
         float seconds = Mathf.Floor(time - minutes * 60);
         float milliseconds = Mathf.Floor((time % 1) * 10f);
         timer.text = string.Format("{0:00}:{1:00},{2:0}", minutes, seconds, milliseconds);
-        
+
     }
 
     private void InitializeNumbers()
@@ -165,6 +191,7 @@ public class KaytavaManager : MonoBehaviour
         seuraava.text = $"0{kaytava}-{osoite}";
         Vector3 pos = indicator.transform.position;
         int hylly = osoite / 100 - 1;
+        float xOffset, offset;
         osoite = osoite % 100;
         if (kaytava % 2 != 0)
         {
@@ -172,17 +199,15 @@ public class KaytavaManager : MonoBehaviour
             {
                 int kerroin = (osoite - 1) / 2;
                 int extra = kerroin / 3;
-                float xOffset = (kaytava - 1) * kaytavaVali;
-                float offset = hylly * hyllyvali + kerroin * zSpace + extra * extraJump;
-                indicator.transform.position = new Vector3(indicatorOri.x + xOffset, indicatorOri.y, indicatorOri.z + offset);
+                xOffset = (kaytava - 1) * kaytavaVali;
+                offset = hylly * hyllyvali + kerroin * zSpace + extra * extraJump;
             }
             else
             {
                 int kerroin = (osoite - 2) / 2;
                 int extra = kerroin / 3;
-                float xOffset = (kaytava - 1) * kaytavaVali - 3.9f;
-                float offset = hylly * hyllyvali + kerroin * zSpace + extra * extraJump;
-                indicator.transform.position = new Vector3(indicatorOri.x + xOffset, indicatorOri.y, indicatorOri.z + offset);
+                xOffset = (kaytava - 1) * kaytavaVali - osoiteVali;
+                offset = hylly * hyllyvali + kerroin * zSpace + extra * extraJump;
             }
         }
         else
@@ -191,18 +216,20 @@ public class KaytavaManager : MonoBehaviour
             {
                 int kerroin = (30 - osoite) / 2;
                 int extra = kerroin / 3;
-                float xOffset = (kaytava - 1) * kaytavaVali;
-                float offset = (2 - hylly) * hyllyvali + kerroin * zSpace + extra * extraJump;
-                indicator.transform.position = new Vector3(indicatorOri.x + xOffset, indicatorOri.y, indicatorOri.z + offset);
+                xOffset = (kaytava - 1) * kaytavaVali;
+                offset = (2 - hylly) * hyllyvali + kerroin * zSpace + extra * extraJump;
             }
             else
             {
                 int kerroin = (29 - osoite) / 2;
                 int extra = kerroin / 3;
-                float xOffset = (kaytava - 1) * kaytavaVali - 3.9f;
-                float offset = (2 - hylly) * hyllyvali + kerroin * zSpace + extra * extraJump;
-                indicator.transform.position = new Vector3(indicatorOri.x + xOffset, indicatorOri.y, indicatorOri.z + offset);
+                xOffset = (kaytava - 1) * kaytavaVali - osoiteVali;
+                offset = (2 - hylly) * hyllyvali + kerroin * zSpace + extra * extraJump;
             }
         }
+        indicator.transform.position = new Vector3(indicatorOri.x + xOffset, indicatorOri.y, indicatorOri.z + offset);
+        var multi = kaytava * osoite % 2 != 0 ? indicator.transform.right : -indicator.transform.right;
+        currentKeraysTarget = indicator.transform.position + multi;
+        Debug.DrawLine(indicator.transform.position, currentKeraysTarget, Color.cyan, 10f);
     }
 }
