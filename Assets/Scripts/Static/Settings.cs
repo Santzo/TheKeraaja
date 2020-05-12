@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public static class Settings
@@ -10,6 +11,7 @@ public static class Settings
     public static Keraysera keraysera;
     public static Kerayskone[] kerayskoneet = Resources.LoadAll<Kerayskone>("Kerayskoneet");
     public static Kerayskone kerayskone = kerayskoneet[1];
+    public static TextMeshProUGUI debugText;
     public static int resolution = PlayerPrefs.GetInt("resolution", 0);
     public static string username = PlayerPrefs.GetString("username", "");
     public static Color buttonPressed = new Color32(183, 119, 49, 183);

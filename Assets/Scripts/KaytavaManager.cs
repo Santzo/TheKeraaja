@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class KaytavaManager : MonoBehaviour
 {
-    TextMeshProUGUI timer, seuraava, etaisyys, fps;
+    TextMeshProUGUI timer, seuraava, etaisyys;
     Transform indicator, player;
     Rigidbody rb;
     Transform[] kaytavat;
@@ -24,7 +24,7 @@ public class KaytavaManager : MonoBehaviour
     int rivi = 0;
     bool isCloseToKeraysPoint = false;
     float acceptedVel = 1f, acceptedDist = 2f;
-    KeraysLista[] keraysera;
+    public KeraysLista[] keraysera;
 
     private void Awake()
     {
@@ -37,8 +37,12 @@ public class KaytavaManager : MonoBehaviour
     private void Start()
     {
         keraysera = Settings.kerayserat[0].keraysLista;
+        Events.seuraavaRivi += SeuraavaRivi;
+        for (int i = 0; i < keraysera.Length; i++)
+        {
+            keraysera[i].howManyLeft = keraysera[i].maara;
+        }
         timer = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
-        fps = GameObject.Find("FPS").GetComponent<TextMeshProUGUI>();
         player = GameObject.Find("Kerayskone").transform;
         rb = player.GetComponent<Rigidbody>();
         seuraava = GameObject.Find("Kerayspaikka").GetComponent<TextMeshProUGUI>();
@@ -47,14 +51,13 @@ public class KaytavaManager : MonoBehaviour
         indicator = GameObject.Find("Indicator").transform;
         indicatorOri = indicator.transform.position;
         InitializeNumbers();
-        //timer.transform.position = new Vector2(timer.transform.position.x, Screen.height - 70f * canvas.scaleFactor);
         SeuraavaRivi();
     }
 
     private void SeuraavaRivi()
     {
-        KeraysLista temp = keraysera[rivi];
-        PlaceIndicator(temp.kaytava, temp.paikka);
+        Events.currentRivi = keraysera[rivi];
+        PlaceIndicator(keraysera[rivi].kaytava, keraysera[rivi].paikka);
         rivi++;
         if (rivi >= keraysera.Length)
         {
@@ -67,11 +70,6 @@ public class KaytavaManager : MonoBehaviour
     {
         UpdateTime();
         var dist = UpdateDistance();
-        //var xDistance = currentKeraysTarget.x - player.position.x;
-        //Debug.Log(xDistance);
-        var a = Vector3.Cross(player.forward, currentKeraysTarget);
-        var test = Vector3.Dot(a, player.up);
-        Debug.DrawLine(KeraysKoneController.instance.transform.position, a, Color.cyan);
         if (rb.velocity.magnitude <= acceptedVel && dist <= acceptedDist && !Events.isPlayerCloseToCollectionPoint)
         {
             Events.isPlayerCloseToCollectionPoint = true;
@@ -96,8 +94,6 @@ public class KaytavaManager : MonoBehaviour
     private void UpdateDistanceText(float dist)
     {
         etaisyys.text = string.Format("{0:0.0}m", dist);
-
-        fps.text = (1f / Time.deltaTime).ToString("F1");
     }
 
     private void UpdateTime()
@@ -229,6 +225,6 @@ public class KaytavaManager : MonoBehaviour
         }
         indicator.transform.position = new Vector3(indicatorOri.x + xOffset, indicatorOri.y, indicatorOri.z + offset);
         var multi = kaytava * osoite % 2 != 0 ? indicator.transform.right: -indicator.transform.right;
-        currentKeraysTarget = indicator.transform.position + multi;
+        currentKeraysTarget = indicator.transform.position + multi * 0.8f;
     }
 }

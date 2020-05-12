@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class KeraajaController : MonoBehaviour
 {
-    private int walk, idle, walkMultiplier, pickUp;
+    private int animWalk, animIdle, animWalkMultiplier, animPickUp, animWalkBox;
     private Animator anim;
     private NavMeshAgent agent;
     int layerMask;
-    private Transform right, left, baseLocation;
-    private Vector3 currentTarget, currentRullakko;
+    private Transform right, left, baseLocation, currentRullakko, front;
+    private Vector3 currentTarget, currentRullakkoSide, currentKoneSide, currentAktiivi;
     public float walkSpeed = 10f;
     public float rotationSpeed = 10f;
+    public GameObject box;
+    float collectingSpeed = 1f;
+    private float rullakkoSideOffset = 0.65f, minDistance = 0.15f;
+    private bool startKerays = false;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -22,42 +27,64 @@ public class KeraajaController : MonoBehaviour
     }
     void Start()
     {
+        box.SetActive(false);
         agent = GetComponent<NavMeshAgent>();
-        walk = Animator.StringToHash("Walk");
-        idle = Animator.StringToHash("Idle");
-        walkMultiplier = Animator.StringToHash("WalkMultiplier");
-        pickUp = Animator.StringToHash("PickUp");
+        AnimationsStringToHash();
         var kone = GameObject.Find("Kerayskone");
         left = kone.transform.Find("Left");
         right = kone.transform.Find("Right");
+        front = kone.transform.Find("Front");
         baseLocation = kone.transform.Find("KeraajaLocation");
-        anim.SetFloat(walkMultiplier, 2.5f);
+        anim.SetFloat(animWalkMultiplier, 2.5f);
         Events.onStartCollecting += StartCollecting;
+        Events.onTapMovementSpeed += val => collectingSpeed = val;
     }
 
-    private void StartCollecting()
+    private void AnimationsStringToHash()
     {
-        anim.SetTrigger(walk);
-        currentTarget = KaytavaManager.currentKeraysTarget;
-        var curRul = KeraysKoneController.instance.rullakot[0];
-        var leftRullakko = curRul.position + -curRul.right * 0.7f;
-        var rightRullakko = curRul.position + curRul.right * 0.7f;
-        var whichSide = (currentTarget - leftRullakko).magnitude >= (currentTarget - rightRullakko).magnitude ? rightRullakko : leftRullakko;
-        
+        animWalk = Animator.StringToHash("Walk");
+        animIdle = Animator.StringToHash("Idle");
+        animWalkMultiplier = Animator.StringToHash("WalkMultiplier");
+        animPickUp = Animator.StringToHash("PickUp");
+        animWalkBox = Animator.StringToHash("WalkBox");
+    }
+
+    private void StartCollecting(bool start)
+    {
+        if (!start) return;
+        Events.onUpdateRemainingAmount(Events.currentRivi.howManyLeft);
+        anim.SetTrigger(animWalk);
+        currentAktiivi = KaytavaManager.currentKeraysTarget;
+        currentRullakko = KeraysKoneController.instance.rullakot[0];
+        var leftRullakko = currentRullakko.position + -currentRullakko.right * rullakkoSideOffset;
+        var rightRullakko = currentRullakko.position + currentRullakko.right * rullakkoSideOffset;
+        var whichSide = (currentAktiivi - leftRullakko).magnitude >= (currentAktiivi - rightRullakko).magnitude ? rightRullakko : leftRullakko;
+        var koneMulti = whichSide == leftRullakko ? -1f : 1f;
         var a = Physics.OverlapSphere(whichSide, 0.5f, layerMask);
-        if (a.Length > 0)
+        var b = Physics.OverlapSphere(front.position + koneMulti * front.right * rullakkoSideOffset, 0.5f, layerMask);
+        if (a.Length > 0 || b.Length > 0)
         {
             Debug.Log("Osui");
-            currentRullakko = whichSide == leftRullakko ? rightRullakko : leftRullakko;
+            currentRullakkoSide = whichSide == leftRullakko ? rightRullakko : leftRullakko;
         }
         else
         {
-            currentRullakko = whichSide;
+            currentRullakkoSide = whichSide;
         }
-        agent.destination = currentTarget;
+        currentKoneSide = currentRullakkoSide == leftRullakko ? left.position : right.position;
+        currentTarget = currentKoneSide;
+        startKerays = true;
+        agent.enabled = false;
+        transform.rotation = Quaternion.LookRotation(currentTarget - transform.position);
     }
-
-    // Update is called once per frame
+    void RotateTowardsTarget(Vector3? target = null, bool snap = false)
+    {
+        var _target = target ?? agent.steeringTarget;
+        var look = _target - transform.position;
+        var dir = Quaternion.LookRotation(look, transform.up);
+        transform.rotation = !snap ? Quaternion.RotateTowards(transform.rotation, dir, rotationSpeed * Time.deltaTime)
+                                    : dir;
+    }
     void Update()
     {
         if (!Events.isPlayerCollecting)
@@ -67,6 +94,24 @@ public class KeraajaController : MonoBehaviour
             return;
         }
 
+        anim.SetFloat(animWalkMultiplier, collectingSpeed * 0.75f);
+        if (startKerays)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, currentTarget, collectingSpeed * Time.deltaTime);
+            RotateTowardsTarget(currentTarget);
+            if (transform.position == currentTarget)
+            {
+                startKerays = false;
+                currentTarget = currentAktiivi;
+                agent.enabled = true;
+                agent.isStopped = false;
+                agent.destination = currentTarget;
+            }
+            return;
+        }
+
+        agent.speed = collectingSpeed;
+
         if (!Events.isPlayerPickingUp)
         {
             if (agent.isStopped)
@@ -74,32 +119,75 @@ public class KeraajaController : MonoBehaviour
                 agent.isStopped = false;
                 agent.destination = currentTarget;
             }
-
-            var look = currentTarget - transform.position;
-            var dir = Quaternion.LookRotation(look, transform.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, dir, rotationSpeed * Time.deltaTime);
+            RotateTowardsTarget();
         }
+
         else
         {
             var time = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+            if (time >= 0.5f && currentTarget == currentRullakkoSide && !box.activeSelf)
+            {
+                box.SetActive(true);
+            }
+            else if (time >= 0.5f && currentTarget != currentRullakkoSide && box.activeSelf)
+            {
+                box.SetActive(false);
+            }
             if (time >= 1f)
             {
-                anim.SetTrigger(walk);
+                anim.SetTrigger(currentTarget == currentRullakkoSide ? animWalkBox : animWalk);
                 Events.isPlayerPickingUp = false;
                 return;
             }
 
         }
-  
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && !Events.isPlayerPickingUp)
+
+        var dist = (currentTarget - transform.position).sqrMagnitude;
+
+        if (!agent.pathPending && dist < minDistance * minDistance && !Events.isPlayerPickingUp)
         {
-            anim.SetTrigger(pickUp);
-            var look = currentTarget - transform.position;
-            var dir = Quaternion.LookRotation(look, transform.up);
-            transform.rotation = dir;
-            agent.isStopped = true;
-            Events.isPlayerPickingUp = true;
-            currentTarget = currentTarget == KaytavaManager.currentKeraysTarget ? currentRullakko : KaytavaManager.currentKeraysTarget;
+            if (currentTarget == currentKoneSide)
+            {
+                if (Events.currentRivi.howManyLeft > 0)
+                {
+                    currentTarget = currentAktiivi;
+                    agent.destination = currentTarget;
+                }
+                else
+                {
+                  
+                    Events.isPlayerCollecting = false;
+                    Events.onStartCollecting(false);
+                    Events.isPlayerPickingUp = false;
+                    agent.enabled = false;
+                    anim.SetTrigger(animIdle);
+                    Events.seuraavaRivi();
+                    return;
+                }
+            }
+            else
+            {
+                if (currentTarget == currentRullakkoSide)
+                {
+                    RotateTowardsTarget(currentRullakko.position, true);
+                    Events.currentRivi.howManyLeft--;
+                    Events.onUpdateRemainingAmount(Events.currentRivi.howManyLeft);
+                }
+                else
+                {
+                    RotateTowardsTarget(currentTarget, true);
+                }
+                anim.SetTrigger(animPickUp);
+                agent.isStopped = true;
+                Events.isPlayerPickingUp = true;
+                currentTarget = currentTarget == currentAktiivi ? currentRullakkoSide : currentAktiivi;
+                if (Events.currentRivi.howManyLeft == 0)
+                {
+
+                    currentTarget = currentKoneSide;
+                }
+            }
         }
 
 

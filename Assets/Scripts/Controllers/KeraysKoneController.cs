@@ -30,6 +30,7 @@ public class KeraysKoneController : MonoBehaviour
     }
     private void Start()
     {
+        Settings.debugText = GameObject.Find("DebugText").GetComponent<TMPro.TextMeshProUGUI>();
         Spawn();
         Events.applyForce += ApplyForwardForce;
         maxMoveSpeed = Settings.kerayskone.nopeus * 1.65f;
@@ -44,6 +45,7 @@ public class KeraysKoneController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (Events.isPlayerCollecting) return;
         HandleMovement();
     }
 

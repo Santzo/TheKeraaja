@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
     Rigidbody playerBody;
     public float cameraTurnSpeed = 500f;
     float cameraFollowSpeed = 0.05f;
-    float maxFollowSpeed;
+    float maxFollowSpeed, followSpeed, offset = 1f;
 
     private void Start()
     {
@@ -23,11 +23,12 @@ public class CameraController : MonoBehaviour
     }
     private void Update()
     {
-
-        Vector3 target = !Events.isPlayerCollecting ? player.TransformPoint(playerOffset): player.TransformPoint(playerOffset * 0.82f);
+        float wantedOffset = !Events.isPlayerCollecting ? 1f : 0.82f;
+        offset = Mathf.SmoothStep(offset, wantedOffset, 0.025f);
+        Vector3 target = player.TransformPoint(playerOffset * offset);
         float playerTurnSpeed = Mathf.Abs(playerBody.angularVelocity.y)+ 1f;
         cameraFollowSpeed = 0.08f - playerBody.velocity.magnitude * 0.004f;
-        float followSpeed = !Events.isPlayerCollecting ? Mathf.Clamp(cameraFollowSpeed * playerTurnSpeed * 0.125f, 0.02f, maxFollowSpeed)
+        followSpeed = !Events.isPlayerCollecting ? Mathf.Clamp(cameraFollowSpeed * playerTurnSpeed * 0.125f, 0.02f, maxFollowSpeed)
                                                         : 0.9f;
         transform.position = Vector3.SmoothDamp(transform.position, target, ref reference, followSpeed);
         Quaternion targetRot = new Quaternion();
