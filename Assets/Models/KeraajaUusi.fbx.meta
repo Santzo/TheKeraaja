@@ -1,27 +1,29 @@
 fileFormatVersion: 2
-guid: b7f7b9e4f98792143a558ff4be183cab
+guid: 79b8c66083fb7394e9bc211704243218
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable:
   - first:
-      74: 3515170952244877179
-    second: Armature|PickUp
+      74: 8349542763059015795
+    second: Keraaja|Walk
   - first:
-      74: -5934649280124288633
-    second: Armature|PickUp.001
+      74: 3688394870912671107
+    second: Keraaja|Idle
   - first:
       74: 8349542763059015795
-    second: Armature|Walk
+    second: Keraaja|Walk
   - first:
       74: -5702753193055527435
     second: Keraaja|PickUp
   - first:
-      74: -3699152891621928568
-    second: Keraaja|Walk
+      74: 2138807769611716471
+    second: Keraaja|WalkBox
+  externalObjects:
   - first:
-      74: -6120190834168570650
-    second: Keraaja|RunWithABox
-  externalObjects: {}
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: UV_Material_Lookup
+    second: {fileID: 2100000, guid: 9e12bd8c727ec0f4194832d883dc5c8a, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -50,18 +52,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Keraaja|PickUp
-      takeName: Keraaja|PickUp
+      name: Keraaja|Walk
+      takeName: Armature|Walk
       internalID: 0
       firstFrame: 0
-      lastFrame: 60
+      lastFrame: 62
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -79,8 +81,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Keraaja|Walk
-      takeName: Keraaja|Walk
+      name: Keraaja|Idle
+      takeName: Armature|Idle
       internalID: 0
       firstFrame: 0
       lastFrame: 60
@@ -108,11 +110,40 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Keraaja|RunWithABox
-      takeName: Keraaja|RunWithABox
+      name: Keraaja|PickUp
+      takeName: Armature|PickUp
       internalID: 0
       firstFrame: 0
       lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Keraaja|WalkBox
+      takeName: Armature|WalkBox
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 62
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -146,8 +177,8 @@ ModelImporter:
     sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1

@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     Transform player;
     Rigidbody playerBody;
     public float cameraTurnSpeed = 500f;
-    float cameraFollowSpeed = 0.05f;
+    float cameraFollowSpeed = 0.05f, cameraSmooth = 10f;
     float maxFollowSpeed, followSpeed, offset = 1f;
 
     private void Start()
@@ -24,7 +24,7 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         float wantedOffset = !Events.isPlayerCollecting ? 1f : 0.82f;
-        offset = Mathf.SmoothStep(offset, wantedOffset, 0.025f);
+        offset = Mathf.SmoothStep(offset, wantedOffset, cameraSmooth * Time.deltaTime);
         Vector3 target = player.TransformPoint(playerOffset * offset);
         float playerTurnSpeed = Mathf.Abs(playerBody.angularVelocity.y)+ 1f;
         cameraFollowSpeed = 0.08f - playerBody.velocity.magnitude * 0.004f;

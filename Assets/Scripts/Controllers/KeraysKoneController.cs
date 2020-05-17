@@ -65,17 +65,19 @@ public class KeraysKoneController : MonoBehaviour
     }
     private bool ApplyBrake(float movement, float rpm, float strength)
     {
-        if (movement > 0f)
+        switch (movement)
         {
-            return rpm > movement * strength;
-        }
-        else if (movement < 0f)
-        {
-            return rpm < movement * strength;
-        }
-        else
-        {
-            return rpm != movement;
+            case var _ when movement < 0f:
+                if (rpm > 0f)
+                    return true;
+                else
+                    return false;
+            case var _ when movement > 0f:
+                if (rpm < 0f)
+                    return true;
+                else return false;
+            default:
+                return rpm != movement;
         }
     }
     public void ApplyForwardForce(Vector2 force)

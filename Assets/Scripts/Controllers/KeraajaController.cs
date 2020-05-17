@@ -174,10 +174,7 @@ public class KeraajaController : MonoBehaviour
                     Events.currentRivi.howManyLeft--;
                     Events.onUpdateRemainingAmount(Events.currentRivi.howManyLeft);
                 }
-                else
-                {
-                    RotateTowardsTarget(currentTarget, true);
-                }
+        
                 anim.SetTrigger(animPickUp);
                 agent.isStopped = true;
                 Events.isPlayerPickingUp = true;
