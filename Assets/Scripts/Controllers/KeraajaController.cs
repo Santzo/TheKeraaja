@@ -60,8 +60,10 @@ public class KeraajaController : MonoBehaviour
         var rightRullakko = currentRullakko.position + currentRullakko.right * rullakkoSideOffset;
         var whichSide = (currentAktiivi - leftRullakko).magnitude >= (currentAktiivi - rightRullakko).magnitude ? rightRullakko : leftRullakko;
         var koneMulti = whichSide == leftRullakko ? -1f : 1f;
+
         var a = Physics.OverlapSphere(whichSide, 0.5f, layerMask);
         var b = Physics.OverlapSphere(front.position + koneMulti * front.right * rullakkoSideOffset, 0.5f, layerMask);
+
         if (a.Length > 0 || b.Length > 0)
         {
             Debug.Log("Osui");

@@ -9,7 +9,8 @@ public class KaytavaManager : MonoBehaviour
     TextMeshProUGUI timer, seuraava, etaisyys;
     Transform indicator, player;
     Rigidbody rb;
-    Transform[] kaytavat;
+    Transform[] kaytavat, aktiivit;
+    public Material[] laatikot;
     float time = 0f;
     Vector3 indicatorOri;
     public static Vector3 currentKeraysTarget;
@@ -36,6 +37,11 @@ public class KaytavaManager : MonoBehaviour
     }
     private void Start()
     {
+        var aktiivit = transform.GetAllChildren("Laatikot");
+        for (int i = 0; i < aktiivit.Length; i++)
+        {
+            aktiivit[i].GetComponent<MeshRenderer>().sharedMaterial = laatikot[UnityEngine.Random.Range(0, laatikot.Length)];
+        }
         keraysera = Settings.kerayserat[0].keraysLista;
         Events.seuraavaRivi += SeuraavaRivi;
         for (int i = 0; i < keraysera.Length; i++)
