@@ -57,7 +57,7 @@ public static class ExtensionMethods
     {
         foreach (Transform child in ori)
         {
-            if (child.name == tag) list.Add(child);
+            if (child.name.StartsWith(tag)) list.Add(child);
             child.AddToList(list, tag);
         }
     }

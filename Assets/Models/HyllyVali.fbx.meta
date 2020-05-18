@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Laatikko
+    second: {fileID: 2100000, guid: b609f895b45f5d34281eb16e38189cda, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Lava
     second: {fileID: 2100000, guid: 7b0453cf8720a5b41b0b850b81124712, type: 2}
   - first:

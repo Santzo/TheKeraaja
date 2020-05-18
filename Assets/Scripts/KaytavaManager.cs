@@ -11,6 +11,7 @@ public class KaytavaManager : MonoBehaviour
     Rigidbody rb;
     Transform[] kaytavat, aktiivit;
     public Material[] laatikot;
+    LODGroup[] lodGroup;
     float time = 0f;
     Vector3 indicatorOri;
     public static Vector3 currentKeraysTarget;
@@ -37,10 +38,23 @@ public class KaytavaManager : MonoBehaviour
     }
     private void Start()
     {
-        var aktiivit = transform.GetAllChildren("Laatikot");
-        for (int i = 0; i < aktiivit.Length; i++)
+        lodGroup = FindObjectsOfType<LODGroup>();
+        for (int a = 0; a < lodGroup.Length; a++)
         {
-            aktiivit[i].GetComponent<MeshRenderer>().sharedMaterial = laatikot[UnityEngine.Random.Range(0, laatikot.Length)];
+            var lod = lodGroup[a].GetLODs();
+            lod[0] = new LOD(0.15f, lod[0].renderers);
+            lodGroup[a].SetLODs(lod);
+            lodGroup[a].RecalculateBounds();
+
+        }
+        var aktiivit = transform.GetAllChildren("Laatikot");
+        for (int i = 0; i < aktiivit.Length; i+=2)
+        {
+            var rnd = UnityEngine.Random.Range(0, laatikot.Length);
+            aktiivit[i].GetComponent<MeshRenderer>().sharedMaterial = laatikot[rnd];
+            aktiivit[i + 1].GetComponent<MeshRenderer>().sharedMaterial = laatikot[rnd];
+
+            //aktiivit[i].GetComponent<MeshRenderer>().sharedMaterial = laatikot[0];
         }
         keraysera = Settings.kerayserat[0].keraysLista;
         Events.seuraavaRivi += SeuraavaRivi;
@@ -230,7 +244,7 @@ public class KaytavaManager : MonoBehaviour
             }
         }
         indicator.transform.position = new Vector3(indicatorOri.x + xOffset, indicatorOri.y, indicatorOri.z + offset);
-        var multi = kaytava * osoite % 2 != 0 ? indicator.transform.right: -indicator.transform.right;
+        var multi = kaytava * osoite % 2 != 0 ? indicator.transform.right : -indicator.transform.right;
         currentKeraysTarget = indicator.transform.position + multi * 0.8f;
     }
 }

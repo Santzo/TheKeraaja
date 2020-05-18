@@ -30,7 +30,6 @@ public class UIHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Debug.Log("Blaa");
         Events.isPlayerCollecting = true;
         Events.onStartCollecting(true);
     }
