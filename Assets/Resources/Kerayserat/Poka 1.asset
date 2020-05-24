@@ -18,13 +18,17 @@ MonoBehaviour:
   keraysLista:
   - kaytava: 1
     paikka: 124
-    maara: 3
+    maara: 45
+    howManyLeft: 0
   - kaytava: 4
     paikka: 105
     maara: 2
+    howManyLeft: 0
   - kaytava: 5
     paikka: 230
     maara: 1
+    howManyLeft: 0
   - kaytava: 7
     paikka: 316
     maara: 5
+    howManyLeft: 5

@@ -9,6 +9,7 @@ public class KeraysLista
     public int paikka;
     public int maara;
     public int howManyLeft;
+    public int material;
 }
 
 public class HighScoreEntry

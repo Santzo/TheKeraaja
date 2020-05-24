@@ -10,7 +10,7 @@ public class KaytavaManager : MonoBehaviour
     Transform indicator, player;
     Rigidbody rb;
     Transform[] kaytavat, aktiivit;
-    public Material[] laatikot;
+    public Material[] laatikotMaterials;
     LODGroup[] lodGroup;
     float time = 0f;
     Vector3 indicatorOri;
@@ -38,25 +38,9 @@ public class KaytavaManager : MonoBehaviour
     }
     private void Start()
     {
-        lodGroup = FindObjectsOfType<LODGroup>();
-        for (int a = 0; a < lodGroup.Length; a++)
-        {
-            var lod = lodGroup[a].GetLODs();
-            lod[0] = new LOD(0.15f, lod[0].renderers);
-            lodGroup[a].SetLODs(lod);
-            lodGroup[a].RecalculateBounds();
-
-        }
-        var aktiivit = transform.GetAllChildren("Laatikot");
-        for (int i = 0; i < aktiivit.Length; i+=2)
-        {
-            var rnd = UnityEngine.Random.Range(0, laatikot.Length);
-            aktiivit[i].GetComponent<MeshRenderer>().sharedMaterial = laatikot[rnd];
-            aktiivit[i + 1].GetComponent<MeshRenderer>().sharedMaterial = laatikot[rnd];
-
-            //aktiivit[i].GetComponent<MeshRenderer>().sharedMaterial = laatikot[0];
-        }
         keraysera = Settings.kerayserat[0].keraysLista;
+        ApplyLodSettings();
+        RandomizeMaterials();
         Events.seuraavaRivi += SeuraavaRivi;
         for (int i = 0; i < keraysera.Length; i++)
         {
@@ -74,6 +58,57 @@ public class KaytavaManager : MonoBehaviour
         SeuraavaRivi();
     }
 
+    private void ApplyLodSettings()
+    {
+        lodGroup = FindObjectsOfType<LODGroup>();
+        for (int a = 0; a < lodGroup.Length; a++)
+        {
+            var lod = lodGroup[a].GetLODs();
+            lod[0] = new LOD(0.15f, lod[0].renderers);
+            lodGroup[a].SetLODs(lod);
+            lodGroup[a].RecalculateBounds();
+
+        }
+    }
+
+    private void RandomizeMaterials()
+    {
+        var aktiivit = transform.GetAllChildren("Laatikot");
+        int[] materiaalit = new int[aktiivit.Length / 2];
+        int matIndex = 0;
+        for (int i = 0; i < aktiivit.Length; i += 2)
+        {
+            var rnd = UnityEngine.Random.Range(0, laatikotMaterials.Length);
+            materiaalit[matIndex] = rnd;
+            matIndex++;
+            aktiivit[i].GetComponent<MeshRenderer>().sharedMaterial = laatikotMaterials[rnd];
+            aktiivit[i + 1].GetComponent<MeshRenderer>().sharedMaterial = laatikotMaterials[rnd];
+        }
+        for (int i = 0; i < keraysera.Length; i ++)
+        {
+            int a = KeraysEraMatIndex(keraysera[i].kaytava, keraysera[i].paikka);
+            keraysera[i].material = materiaalit[a];
+        }
+    }
+    int KeraysEraMatIndex(int kaytava, int osoite)
+    {
+        int kaytavaMulti = (kaytava - 1) * 30;
+        int osoiteAdd = OsoiteToIndex(osoite);
+        int finalIndex = kaytavaMulti + osoiteAdd;
+        return finalIndex;
+    }
+    int OsoiteToIndex(int osoite)
+    {
+        int puoliAdd = osoite % 2 != 0 ? 0 : 15;
+        int vyohykeAdd = osoite < 200 ? 0 : osoite < 300 ? 5 : 10;
+        int divider = osoite < 200 ? 100 : osoite < 300 ? 200 : 300;
+        int a = osoite % divider;
+        float b = a / 6.05f;
+        int osoiteAdd = Mathf.FloorToInt(b);
+        Debug.Log(puoliAdd + ", " + vyohykeAdd + ", " + osoiteAdd);
+        
+        return puoliAdd + vyohykeAdd + osoiteAdd;
+    }
     private void SeuraavaRivi()
     {
         Events.currentRivi = keraysera[rivi];
@@ -106,7 +141,7 @@ public class KaytavaManager : MonoBehaviour
 
     private float UpdateDistance()
     {
-        Vector2 pl = new Vector2(player.position.x, player.position.z);
+        Vector2 pl = new Vector2(Events.currentRullakko.position.x, Events.currentRullakko.position.z);
         Vector2 dest = new Vector2(indicator.position.x, indicator.position.z);
         return Vector2.Distance(pl, dest);
 
@@ -119,9 +154,9 @@ public class KaytavaManager : MonoBehaviour
     private void UpdateTime()
     {
         time += Time.deltaTime;
-        float minutes = Mathf.Floor(time / 60);
-        float seconds = Mathf.Floor(time - minutes * 60);
-        float milliseconds = Mathf.Floor((time % 1) * 10f);
+        float minutes = Mathf.Floor(time / 60f);
+        float seconds = Mathf.Floor(time - minutes * 60f);
+        float milliseconds = Mathf.Floor((time % 1f) * 10f);
         timer.text = string.Format("{0:00}:{1:00},{2:0}", minutes, seconds, milliseconds);
 
     }

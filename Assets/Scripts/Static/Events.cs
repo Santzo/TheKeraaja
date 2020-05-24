@@ -19,4 +19,6 @@ public static class Events
     public static Action<int> onUpdateRemainingAmount = delegate { };
     public static Action seuraavaRivi = delegate { };
     public static Action<float> onTapMovementSpeed = delegate { };
+    public static Action boxCollected = delegate { };
+    public static Transform currentRullakko;
 }

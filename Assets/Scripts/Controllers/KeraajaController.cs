@@ -11,13 +11,14 @@ public class KeraajaController : MonoBehaviour
     private Animator anim;
     private NavMeshAgent agent;
     int layerMask;
+    private KaytavaManager kaytavaManager;
     private Transform right, left, baseLocation, currentRullakko, front;
     private Vector3 currentTarget, currentRullakkoSide, currentKoneSide, currentAktiivi;
     public float walkSpeed = 10f;
     public float rotationSpeed = 10f;
     public GameObject box;
     float collectingSpeed = 1f;
-    private float rullakkoSideOffset = 0.65f, minDistance = 0.15f;
+    private float rullakkoSideOffset = 0.5f, minDistance = 0.2f;
     private bool startKerays = false;
     // Start is called before the first frame update
     private void Awake()
@@ -27,6 +28,7 @@ public class KeraajaController : MonoBehaviour
     }
     void Start()
     {
+        kaytavaManager = FindObjectOfType<KaytavaManager>();
         box.SetActive(false);
         agent = GetComponent<NavMeshAgent>();
         AnimationsStringToHash();
@@ -54,19 +56,27 @@ public class KeraajaController : MonoBehaviour
         if (!start) return;
         Events.onUpdateRemainingAmount(Events.currentRivi.howManyLeft);
         anim.SetTrigger(animWalk);
+
+        CalculatePositions();
+        startKerays = true;
+        agent.enabled = false;
+        transform.rotation = Quaternion.LookRotation(currentTarget - transform.position);
+    }
+    void CalculatePositions()
+    {
         currentAktiivi = KaytavaManager.currentKeraysTarget;
-        currentRullakko = KeraysKoneController.instance.rullakot[0];
+        currentRullakko = Events.currentRullakko;
         var leftRullakko = currentRullakko.position + -currentRullakko.right * rullakkoSideOffset;
         var rightRullakko = currentRullakko.position + currentRullakko.right * rullakkoSideOffset;
         var whichSide = (currentAktiivi - leftRullakko).magnitude >= (currentAktiivi - rightRullakko).magnitude ? rightRullakko : leftRullakko;
         var koneMulti = whichSide == leftRullakko ? -1f : 1f;
 
-        var a = Physics.OverlapSphere(whichSide, 0.5f, layerMask);
-        var b = Physics.OverlapSphere(front.position + koneMulti * front.right * rullakkoSideOffset, 0.5f, layerMask);
+        var a = Physics.OverlapSphere(whichSide, 0.45f, layerMask);
+        var b = Physics.OverlapSphere(front.position + koneMulti * front.right * rullakkoSideOffset, 0.45f, layerMask);
 
         if (a.Length > 0 || b.Length > 0)
         {
-            Debug.Log("Osui");
+            Debug.Log(a.Length > 0 ? $"Rulakko Osui" : "Kone osui");
             currentRullakkoSide = whichSide == leftRullakko ? rightRullakko : leftRullakko;
         }
         else
@@ -75,9 +85,6 @@ public class KeraajaController : MonoBehaviour
         }
         currentKoneSide = currentRullakkoSide == leftRullakko ? left.position : right.position;
         currentTarget = currentKoneSide;
-        startKerays = true;
-        agent.enabled = false;
-        transform.rotation = Quaternion.LookRotation(currentTarget - transform.position);
     }
     void RotateTowardsTarget(Vector3? target = null, bool snap = false)
     {
@@ -96,7 +103,7 @@ public class KeraajaController : MonoBehaviour
             return;
         }
 
-        anim.SetFloat(animWalkMultiplier, collectingSpeed * 0.75f);
+        anim.SetFloat(animWalkMultiplier, 5f);
         if (startKerays)
         {
             transform.position = Vector3.MoveTowards(transform.position, currentTarget, collectingSpeed * Time.deltaTime);
@@ -112,7 +119,7 @@ public class KeraajaController : MonoBehaviour
             return;
         }
 
-        agent.speed = collectingSpeed;
+        agent.speed = 5f;
 
         if (!Events.isPlayerPickingUp)
         {
@@ -131,6 +138,8 @@ public class KeraajaController : MonoBehaviour
             if (time >= 0.5f && currentTarget == currentRullakkoSide && !box.activeSelf)
             {
                 box.SetActive(true);
+                int a = Events.currentRivi.material;
+                box.GetComponent<MeshRenderer>().sharedMaterial = kaytavaManager.laatikotMaterials[a];
             }
             else if (time >= 0.5f && currentTarget != currentRullakkoSide && box.activeSelf)
             {
@@ -174,6 +183,8 @@ public class KeraajaController : MonoBehaviour
                 {
                     RotateTowardsTarget(currentRullakko.position, true);
                     Events.currentRivi.howManyLeft--;
+                    Events.boxCollected();
+                    CalculatePositions();
                     Events.onUpdateRemainingAmount(Events.currentRivi.howManyLeft);
                 }
         

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
@@ -30,12 +31,12 @@ public static class ExtensionMethods
         }
     }
 
-    public static T[] LoadAssets<T>(this T[] arr, string path) where T : Object
-    {
-        var assetBundle = AssetBundle.LoadFromFile(System.IO.Path.Combine(Application.streamingAssetsPath, path));
-        var assets = assetBundle.LoadAllAssets<T>();
-        return assets;
-    }
+    //public static T[] LoadAssets<T>(this T[] arr, string path) where T : Object
+    //{
+    //    var assetBundle = AssetBundle.LoadFromFile(System.IO.Path.Combine(Application.streamingAssetsPath, path));
+    //    var assets = assetBundle.LoadAllAssets<T>();
+    //    return assets;
+    //}
 
     public static Transform GetFromAllChildren(this Transform ori, string tag)
     {
@@ -71,5 +72,12 @@ public static class ExtensionMethods
 
         return result.ToArray();
 
+    }
+    public static void ForEach<T>(this T[] ori, Action<T> _action) where T: class
+    {
+        for(int i = 0; i < ori.Length; i++)
+        {
+            _action(ori[i]);
+        }
     }
 }

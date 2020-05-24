@@ -11,6 +11,7 @@ public class KeraysKoneController : MonoBehaviour
     WheelCollider[] wheels;
     Vector3 velocity = Vector3.zero;
     internal Transform[] rullakot;
+    internal RullakkoController[] rullakkoControllers;
     public float testiRot = 0.1f;
     public float accelerationRate, accRotationRate;
     [SerializeField]
@@ -19,6 +20,7 @@ public class KeraysKoneController : MonoBehaviour
     public float maxRotationSpeed, maxMoveSpeed;
     [SerializeField]
     private float decelerationRate, decRotationRate, minAccelerationSpeed = 90f, minTurnRate = 130f, angularVel;
+    private int howManyBoxesCollected = 0, maxBoxesPerRullakko = 18, currentRullakkoIndex = 0;
     float rotationThreshold = 1f;
     public float strength = 10000f;
 
@@ -33,16 +35,34 @@ public class KeraysKoneController : MonoBehaviour
         Settings.debugText = GameObject.Find("DebugText").GetComponent<TMPro.TextMeshProUGUI>();
         Spawn();
         Events.applyForce += ApplyForwardForce;
+        Events.boxCollected += BoxCollected;
         maxMoveSpeed = Settings.kerayskone.nopeus * 1.65f;
         accelerationRate = Settings.kerayskone.kiihtyvyys * 17.5f;
         decRotationRate = accRotationRate = Settings.kerayskone.kaantyvyys * 3.5f;
         decRotationRate = Settings.kerayskone.jarrutus * 10f;
         rullakot = new Transform[3];
+        rullakkoControllers = new RullakkoController[3];
         for (int i = 0; i < rullakot.Length; i++)
         {
             rullakot[i] = transform.GetChild(i);
+            rullakkoControllers[i] = rullakot[i].GetComponent<RullakkoController>();
         }
+        Events.currentRullakko = rullakot[0];
     }
+
+    private void BoxCollected()
+    {
+        howManyBoxesCollected++;
+        rullakkoControllers[currentRullakkoIndex].ActivateBox();
+        if (howManyBoxesCollected >= maxBoxesPerRullakko)
+        {
+            currentRullakkoIndex++;
+            howManyBoxesCollected = 0;
+        }
+        Events.currentRullakko = rullakot[currentRullakkoIndex];
+
+    }
+
     private void FixedUpdate()
     {
         if (Events.isPlayerCollecting) return;
