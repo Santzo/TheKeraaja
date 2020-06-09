@@ -13,7 +13,7 @@ public class KaytavaManager : MonoBehaviour
     public Material[] laatikotMaterials;
     LODGroup[] lodGroup;
     float time = 0f;
-    Vector3 indicatorOri;
+    Vector3 indicatorOri, finishFlag;
     public static Vector3 currentKeraysTarget;
     Canvas canvas;
     float zSpace = 1.514f;
@@ -41,6 +41,7 @@ public class KaytavaManager : MonoBehaviour
     private void Start()
     {
         keraysera = Settings.kerayserat[0].keraysLista;
+        finishFlag = GameObject.Find("FinishFlag").transform.position;
         ApplyLodSettings();
         RandomizeMaterials();
         Events.seuraavaRivi += SeuraavaRivi;
@@ -111,14 +112,17 @@ public class KaytavaManager : MonoBehaviour
     }
     private void SeuraavaRivi()
     {
-        Events.currentRivi = keraysera[rivi];
-        PlaceIndicator(keraysera[rivi].kaytava, keraysera[rivi].paikka);
-        rivi++;
+        Debug.Log($"{rivi}, {keraysera.Length}");
         if (rivi >= keraysera.Length)
         {
             Debug.Log("Poka valmis");
-            rivi = keraysera.Length - 1;
+            Events.pokaValmis = true;
+            PlaceIndicator();
+            return;
         }
+        Events.currentRivi = keraysera[rivi];
+        PlaceIndicator(keraysera[rivi].kaytava, keraysera[rivi].paikka);
+        rivi++;
     }
 
     private void Update()
@@ -142,7 +146,8 @@ public class KaytavaManager : MonoBehaviour
     private float UpdateDistance()
     {
         Vector2 pl = new Vector2(Events.currentRullakko.position.x, Events.currentRullakko.position.z);
-        Vector2 dest = new Vector2(indicator.position.x, indicator.position.z);
+        Vector2 dest = !Events.pokaValmis ? new Vector2(indicator.position.x, indicator.position.z)
+                                            : new Vector2(finishFlag.x, finishFlag.y);
         return Vector2.Distance(pl, dest);
 
     }
@@ -237,9 +242,15 @@ public class KaytavaManager : MonoBehaviour
         }
     }
 
-    void PlaceIndicator(int kaytava, int osoite)
+    void PlaceIndicator(int kaytava = 0, int osoite = 0)
     {
-        seuraava.text = $"0{kaytava}-{osoite}";
+        seuraava.text = !Events.pokaValmis ? $"0{kaytava}-{osoite}" : "Aja maaliin";
+        if (Events.pokaValmis)
+        {
+            indicator.gameObject.SetActive(false);
+            return;
+        }
+
         Vector3 pos = indicator.transform.position;
         int hylly = osoite / 100 - 1;
         float xOffset, offset;

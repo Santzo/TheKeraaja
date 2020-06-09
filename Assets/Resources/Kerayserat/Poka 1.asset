@@ -18,21 +18,6 @@ MonoBehaviour:
   keraysLista:
   - kaytava: 1
     paikka: 124
-    maara: 3
-    howManyLeft: 0
-    material: 1
-  - kaytava: 4
-    paikka: 105
-    maara: 2
-    howManyLeft: 0
-    material: 0
-  - kaytava: 5
-    paikka: 230
     maara: 1
     howManyLeft: 0
-    material: 0
-  - kaytava: 7
-    paikka: 316
-    maara: 5
-    howManyLeft: 2
-    material: 1
+    material: 2
