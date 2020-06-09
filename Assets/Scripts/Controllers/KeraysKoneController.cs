@@ -12,17 +12,9 @@ public class KeraysKoneController : MonoBehaviour
     Vector3 velocity = Vector3.zero;
     internal Transform[] rullakot;
     internal RullakkoController[] rullakkoControllers;
-    public float testiRot = 0.1f;
-    public float accelerationRate, accRotationRate;
-    [SerializeField]
-    private float currentMoveSpeed, currentRotationSpeed, maxAngularVelocity;
-    [SerializeField]
-    public float maxRotationSpeed, maxMoveSpeed;
-    [SerializeField]
-    private float decelerationRate, decRotationRate, minAccelerationSpeed = 90f, minTurnRate = 130f, angularVel;
+
     private int howManyBoxesCollected = 0, maxBoxesPerRullakko = 18, currentRullakkoIndex = 0;
-    float rotationThreshold = 1f;
-    public float strength = 10000f;
+    private float _jarrutus, _kiihtyvyys, _maksimiNopeus, _kaantyvyys;
 
     private void Awake()
     {
@@ -36,10 +28,10 @@ public class KeraysKoneController : MonoBehaviour
         Spawn();
         Events.applyForce += ApplyForwardForce;
         Events.boxCollected += BoxCollected;
-        maxMoveSpeed = Settings.kerayskone.nopeus * 1.65f;
-        accelerationRate = Settings.kerayskone.kiihtyvyys * 17.5f;
-        decRotationRate = accRotationRate = Settings.kerayskone.kaantyvyys * 3.5f;
-        decRotationRate = Settings.kerayskone.jarrutus * 10f;
+        _jarrutus = Settings.kerayskone.jarrutus * 75f;
+        _kiihtyvyys = Settings.kerayskone.kiihtyvyys * 47.5f;
+        _maksimiNopeus = Settings.kerayskone.nopeus * 125f;
+        _kaantyvyys = Settings.kerayskone.kaantyvyys * 7f;
         rullakot = new Transform[3];
         rullakkoControllers = new RullakkoController[3];
         for (int i = 0; i < rullakot.Length; i++)
@@ -65,26 +57,47 @@ public class KeraysKoneController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Events.isPlayerCollecting) return;
+        if (Events.isPlayerCollecting)
+        {
+            if (rb.velocity.sqrMagnitude > 0.001f)
+            {
+                ForceBreak();
+            }
+            return;
+        }
         HandleMovement();
     }
 
     private void HandleMovement()
     {
         float rpm = wheels[3].rpm;
-        bool brake = ApplyBrake(movement.y, rpm, strength);
+        bool brake = ApplyBrake(movement.y, rpm);
+        float kaantyvyys = _kaantyvyys * (1.25f - Mathf.Log(Math.Abs(rpm), _maksimiNopeus));
+        float finalKaantyvyys = Mathf.Min(kaantyvyys, 25f);
         for (int i = 0; i < 4; i++)
         {
-            wheels[i].brakeTorque = brake ? strength * 2f : 0f;
+            wheels[i].brakeTorque = brake ? _jarrutus : 0f;
             if (i < 2)
             {
-                wheels[i].motorTorque = movement.y * strength;
-                wheels[i].steerAngle = movement.x * accRotationRate;
+                wheels[i].motorTorque = movement.y * _kiihtyvyys;
+                wheels[i].steerAngle = movement.x * finalKaantyvyys;
             }
         }
     }
-    private bool ApplyBrake(float movement, float rpm, float strength)
+   
+    private void ForceBreak()
     {
+        for (int i = 0; i < 4; i++)
+        {
+            wheels[i].brakeTorque = 10000f;
+        }
+        rb.velocity = new Vector3(0f, 0f, 0f);
+    }
+    private bool ApplyBrake(float movement, float rpm)
+    {
+        float absRpm = Math.Abs(rpm);
+        if (absRpm > _maksimiNopeus) return true;
+      
         switch (movement)
         {
             case var _ when movement < 0f:

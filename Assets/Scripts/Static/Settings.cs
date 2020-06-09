@@ -10,7 +10,7 @@ public static class Settings
     public static Keraysera[] kerayserat = Resources.LoadAll<Keraysera>("Kerayserat");
     public static Keraysera keraysera;
     public static Kerayskone[] kerayskoneet = Resources.LoadAll<Kerayskone>("Kerayskoneet");
-    public static Kerayskone kerayskone = kerayskoneet[1];
+    public static Kerayskone kerayskone = kerayskoneet[2];
     public static TextMeshProUGUI debugText;
     public static int resolution = PlayerPrefs.GetInt("resolution", 0);
     public static string username = PlayerPrefs.GetString("username", "");

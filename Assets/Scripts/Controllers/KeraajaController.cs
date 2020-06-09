@@ -9,9 +9,9 @@ public class KeraajaController : MonoBehaviour
 {
     private int animWalk, animIdle, animWalkMultiplier, animPickUp, animWalkBox;
     private Animator anim;
+    private MeshRenderer boxRenderer;
     private NavMeshAgent agent;
     int layerMask;
-    private KaytavaManager kaytavaManager;
     private Transform right, left, baseLocation, currentRullakko, front;
     private Vector3 currentTarget, currentRullakkoSide, currentKoneSide, currentAktiivi;
     public float walkSpeed = 10f;
@@ -28,8 +28,8 @@ public class KeraajaController : MonoBehaviour
     }
     void Start()
     {
-        kaytavaManager = FindObjectOfType<KaytavaManager>();
         box.SetActive(false);
+        boxRenderer = box.GetComponent<MeshRenderer>();
         agent = GetComponent<NavMeshAgent>();
         AnimationsStringToHash();
         var kone = GameObject.Find("Kerayskone");
@@ -103,7 +103,7 @@ public class KeraajaController : MonoBehaviour
             return;
         }
 
-        anim.SetFloat(animWalkMultiplier, 5f);
+        anim.SetFloat(animWalkMultiplier, collectingSpeed * 0.75f);
         if (startKerays)
         {
             transform.position = Vector3.MoveTowards(transform.position, currentTarget, collectingSpeed * Time.deltaTime);
@@ -119,7 +119,7 @@ public class KeraajaController : MonoBehaviour
             return;
         }
 
-        agent.speed = 5f;
+        agent.speed = collectingSpeed;
 
         if (!Events.isPlayerPickingUp)
         {
@@ -139,11 +139,12 @@ public class KeraajaController : MonoBehaviour
             {
                 box.SetActive(true);
                 int a = Events.currentRivi.material;
-                box.GetComponent<MeshRenderer>().sharedMaterial = kaytavaManager.laatikotMaterials[a];
+                boxRenderer.sharedMaterial = KaytavaManager.Instance.laatikotMaterials[a];
             }
             else if (time >= 0.5f && currentTarget != currentRullakkoSide && box.activeSelf)
             {
                 box.SetActive(false);
+                Events.boxCollected();
             }
             if (time >= 1f)
             {
@@ -183,7 +184,6 @@ public class KeraajaController : MonoBehaviour
                 {
                     RotateTowardsTarget(currentRullakko.position, true);
                     Events.currentRivi.howManyLeft--;
-                    Events.boxCollected();
                     CalculatePositions();
                     Events.onUpdateRemainingAmount(Events.currentRivi.howManyLeft);
                 }

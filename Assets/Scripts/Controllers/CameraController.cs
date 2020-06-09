@@ -19,14 +19,14 @@ public class CameraController : MonoBehaviour
         player = GameObject.Find("Kerayskone").transform;
         playerBody = player.GetComponent<Rigidbody>();
         playerOffset = oriCamera - player.position;
-        maxFollowSpeed = cameraFollowSpeed * player.GetComponent<KeraysKoneController>().maxRotationSpeed * 0.75f;
+        maxFollowSpeed = cameraFollowSpeed;
     }
     private void Update()
     {
         float wantedOffset = !Events.isPlayerCollecting ? 1f : 0.82f;
         offset = Mathf.SmoothStep(offset, wantedOffset, cameraSmooth * Time.deltaTime);
         Vector3 target = player.TransformPoint(playerOffset * offset);
-        float playerTurnSpeed = Mathf.Abs(playerBody.angularVelocity.y)+ 1f;
+        float playerTurnSpeed = Mathf.Abs(playerBody.angularVelocity.y) + 1f;
         cameraFollowSpeed = 0.08f - playerBody.velocity.magnitude * 0.004f;
         followSpeed = !Events.isPlayerCollecting ? Mathf.Clamp(cameraFollowSpeed * playerTurnSpeed * 0.125f, 0.02f, maxFollowSpeed)
                                                         : 0.9f;

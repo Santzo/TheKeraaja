@@ -15,6 +15,6 @@ MonoBehaviour:
   keraysKone: {fileID: -927199367670048503, guid: f545fccf01f49134db45ccdb60d71305,
     type: 3}
   nopeus: 9.21
-  kiihtyvyys: 3.91
+  kiihtyvyys: 4.21
   kaantyvyys: 8.12
   jarrutus: 4.27

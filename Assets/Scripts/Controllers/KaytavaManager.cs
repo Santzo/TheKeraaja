@@ -27,9 +27,11 @@ public class KaytavaManager : MonoBehaviour
     bool isCloseToKeraysPoint = false;
     float acceptedVel = 1f, acceptedDist = 2f;
     public KeraysLista[] keraysera;
+    public static KaytavaManager Instance;
 
     private void Awake()
     {
+        if (Instance == null) Instance = this;
         kaytavat = new Transform[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -84,7 +86,7 @@ public class KaytavaManager : MonoBehaviour
             aktiivit[i].GetComponent<MeshRenderer>().sharedMaterial = laatikotMaterials[rnd];
             aktiivit[i + 1].GetComponent<MeshRenderer>().sharedMaterial = laatikotMaterials[rnd];
         }
-        for (int i = 0; i < keraysera.Length; i ++)
+        for (int i = 0; i < keraysera.Length; i++)
         {
             int a = KeraysEraMatIndex(keraysera[i].kaytava, keraysera[i].paikka);
             keraysera[i].material = materiaalit[a];
@@ -105,8 +107,6 @@ public class KaytavaManager : MonoBehaviour
         int a = osoite % divider;
         float b = a / 6.05f;
         int osoiteAdd = Mathf.FloorToInt(b);
-        Debug.Log(puoliAdd + ", " + vyohykeAdd + ", " + osoiteAdd);
-        
         return puoliAdd + vyohykeAdd + osoiteAdd;
     }
     private void SeuraavaRivi()

@@ -18,6 +18,7 @@ public class RullakkoController : MonoBehaviour
     public void ActivateBox()
     {
         laatikot[boxIndex].gameObject.SetActive(true);
+        renderers[boxIndex].sharedMaterial = KaytavaManager.Instance.laatikotMaterials[Events.currentRivi.material];
         boxIndex++;
     }
 }
