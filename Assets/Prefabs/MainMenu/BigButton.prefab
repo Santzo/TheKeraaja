@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 4020044082829666877}
   - component: {fileID: 754454506231851887}
   m_Layer: 5
-  m_Name: HighScores
+  m_Name: BigButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,7 +99,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3584167219806750261}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -161,8 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ea325e788cd3b4f830628a25df59da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oriColor: {r: 0, g: 0, b: 0, a: 0.9647059}
-  colorStaysWhenSelected: 1
+  colorStaysWhenSelected: 0
 --- !u!1 &8417755729012936623
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,10 +225,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Parhaat ajat
+  m_text: Seuraava
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 128127fdb00443c47a4ff28b61806e28, type: 2}
-  m_sharedMaterial: {fileID: 8517177807973441116, guid: 128127fdb00443c47a4ff28b61806e28,
+  m_fontAsset: {fileID: 11400000, guid: 7ce423a89f4308d40961cb3528b0321b, type: 2}
+  m_sharedMaterial: {fileID: -7887663693011200780, guid: 7ce423a89f4308d40961cb3528b0321b,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -272,7 +271,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 0
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -296,10 +295,10 @@ MonoBehaviour:
   m_margin: {x: 9.02, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 8417755729012936617}
-    characterCount: 12
+    characterCount: 8
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 0
+    wordCount: 1
     linkCount: 0
     lineCount: 1
     pageCount: 1

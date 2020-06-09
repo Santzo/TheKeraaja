@@ -87,7 +87,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ea325e788cd3b4f830628a25df59da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oriColor: {r: 0, g: 0, b: 0, a: 0.9647059}
   colorStaysWhenSelected: 1
 --- !u!1 &6181877785836086998
 GameObject:
@@ -154,8 +153,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "P\xC4\xC4LL\xC4"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 128127fdb00443c47a4ff28b61806e28, type: 2}
-  m_sharedMaterial: {fileID: 8517177807973441116, guid: 128127fdb00443c47a4ff28b61806e28,
+  m_fontAsset: {fileID: 11400000, guid: 7ce423a89f4308d40961cb3528b0321b, type: 2}
+  m_sharedMaterial: {fileID: -7887663693011200780, guid: 7ce423a89f4308d40961cb3528b0321b,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -198,7 +197,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 0
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0

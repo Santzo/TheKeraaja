@@ -20,7 +20,7 @@ public abstract class UIObject : MonoBehaviour, IUIObject
         handler = GetComponentInParent<IUIHandler>();
         if (handler == null)
         {
-            Debug.Log("UI Handler not found!");
+            Debug.Log("UI Handler not found! " + name);
             Destroy(gameObject);
         }
     }

@@ -9,8 +9,8 @@ public class UIHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     Transform uiWhileDriving, uiWhileCollecting;
     private void Awake()
     {
-        uiWhileDriving = transform.Find("UIWhileDriving");
-        uiWhileCollecting = transform.Find("UIWhileCollecting");
+        uiWhileDriving = GameObject.Find("UIWhileDriving").transform;
+        uiWhileCollecting = GameObject.Find("UIWhileCollecting").transform;
         uiWhileCollecting.gameObject.SetActive(false);
         startKerays = uiWhileDriving.Find("StartKerays").gameObject;
         startKerays.SetActive(false);
@@ -30,8 +30,7 @@ public class UIHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Events.isPlayerCollecting = true;
-        Events.onStartCollecting(true);
+    
     }
 
     public void OnPointerDown(PointerEventData eventData)

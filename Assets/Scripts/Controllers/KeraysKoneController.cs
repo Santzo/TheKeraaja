@@ -29,8 +29,9 @@ public class KeraysKoneController : MonoBehaviour
         Events.applyForce += ApplyForwardForce;
         Events.boxCollected += BoxCollected;
         _jarrutus = Settings.kerayskone.jarrutus * 75f;
-        _kiihtyvyys = Settings.kerayskone.kiihtyvyys * 47.5f;
-        _maksimiNopeus = Settings.kerayskone.nopeus * 125f;
+        _kiihtyvyys = 200f + Settings.kerayskone.kiihtyvyys * 22.5f;
+        _maksimiNopeus = 480f + Settings.kerayskone.nopeus * 25f;
+        Debug.Log(_maksimiNopeus);
         _kaantyvyys = Settings.kerayskone.kaantyvyys * 7f;
         rullakot = new Transform[3];
         rullakkoControllers = new RullakkoController[3];
@@ -71,6 +72,7 @@ public class KeraysKoneController : MonoBehaviour
     private void HandleMovement()
     {
         float rpm = wheels[3].rpm;
+        Debug.Log(rb.velocity.sqrMagnitude);
         bool brake = ApplyBrake(movement.y, rpm);
         float kaantyvyys = _kaantyvyys * (1.25f - Mathf.Log(Math.Abs(rpm), _maksimiNopeus));
         float finalKaantyvyys = Mathf.Min(kaantyvyys, 25f);

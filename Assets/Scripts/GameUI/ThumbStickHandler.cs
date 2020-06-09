@@ -6,9 +6,9 @@ using UnityEngine.EventSystems;
 public class ThumbStickHandler : MonoBehaviour, IUIHandler
 {
     private bool leftPress, rightPress;
-    private float top, bottom,  leftSize;
-    private float left, right,  rightSize;
-    private Transform leftThumb, rightThumb;
+    private float top, bottom, leftSize;
+    private float left, right, rightSize;
+    private Transform leftThumbArea, rightThumbArea, leftThumbGraphic, rightThumbGraphic;
     private Camera cam;
     private Vector2 leftThumbStart, leftThumbEnd, rightThumbStart, rightThumbEnd;
     private Vector3 leftCenter, rightCenter;
@@ -16,23 +16,25 @@ public class ThumbStickHandler : MonoBehaviour, IUIHandler
     {
         top = transform.Find("Top").position.y;
         bottom = transform.Find("Bottom").position.y;
-        leftThumb = transform.Find("LeftThumbCircle");
-        leftCenter = leftThumb.position;
+        leftThumbArea = transform.Find("LeftThumbArea");
+        leftThumbGraphic = transform.Find("LeftThumbCircle");
+        leftCenter = leftThumbArea.position;
         leftSize = top - bottom;
 
-        RectTransform leftRect = leftThumb.GetComponent<RectTransform>();
-        leftThumbStart = new Vector2(leftThumb.transform.position.x - leftRect.sizeDelta.x / 2, leftThumb.transform.position.y - leftRect.sizeDelta.y / 2);
-        leftThumbEnd = new Vector2(leftThumb.transform.position.x + leftRect.sizeDelta.x / 2, leftThumb.transform.position.y + leftRect.sizeDelta.y / 2);
+        RectTransform leftRect = leftThumbArea.GetComponent<RectTransform>();
+        leftThumbStart = new Vector2(leftThumbArea.transform.position.x - leftRect.sizeDelta.x / 2, leftThumbArea.transform.position.y - leftRect.sizeDelta.y / 2);
+        leftThumbEnd = new Vector2(leftThumbArea.transform.position.x + leftRect.sizeDelta.x / 2, leftThumbArea.transform.position.y + leftRect.sizeDelta.y / 2);
 
-        rightThumb = transform.Find("RightThumbCircle");
+        rightThumbArea = transform.Find("RightThumbArea");
+        rightThumbGraphic = transform.Find("RightThumbCircle");
         left = transform.Find("Left").position.x;
         right = transform.Find("Right").position.x;
-        rightCenter = rightThumb.position;
+        rightCenter = rightThumbArea.position;
         rightSize = right - left;
 
-        RectTransform rightRect = rightThumb.GetComponent<RectTransform>();
-        rightThumbStart = new Vector2(rightThumb.transform.position.x - rightRect.sizeDelta.x / 2, rightThumb.transform.position.y - rightRect.sizeDelta.y / 2);
-        rightThumbEnd = new Vector2(rightThumb.transform.position.x + rightRect.sizeDelta.x / 2, rightThumb.transform.position.y + rightRect.sizeDelta.y / 2);
+        RectTransform rightRect = rightThumbArea.GetComponent<RectTransform>();
+        rightThumbStart = new Vector2(rightThumbArea.transform.position.x - rightRect.sizeDelta.x / 2, rightThumbArea.transform.position.y - rightRect.sizeDelta.y / 2);
+        rightThumbEnd = new Vector2(rightThumbArea.transform.position.x + rightRect.sizeDelta.x / 2, rightThumbArea.transform.position.y + rightRect.sizeDelta.y / 2);
 
     }
     void Start()
@@ -60,40 +62,33 @@ public class ThumbStickHandler : MonoBehaviour, IUIHandler
                 {
                     leftPressSet = true;
                     float touchPos = Mathf.Clamp(pos.y, bottom, top);
-                    leftThumb.transform.position = new Vector3(leftThumb.transform.position.x, touchPos, 0f);
-                    force.y = Mathf.Abs(bottom - leftThumb.transform.position.y) / leftSize * 2f - 1f;
+                    leftThumbGraphic.transform.position = new Vector3(leftThumbGraphic.transform.position.x, touchPos, 0f);
+                    force.y = Mathf.Abs(bottom - leftThumbGraphic.transform.position.y) / leftSize * 2f - 1f;
                 }
                 if (rightPress && !rightPressSet)
                 {
                     rightPressSet = true;
                     float touchPos = Mathf.Clamp(pos.x, left, right);
-                    rightThumb.transform.position = new Vector3(touchPos, rightThumb.transform.position.y, 0f);
-                    force.x = Mathf.Abs(left - rightThumb.transform.position.x) / rightSize * 2f - 1f;
-                    Debug.Log(force.x);
+                    rightThumbGraphic.transform.position = new Vector3(touchPos, rightThumbGraphic.transform.position.y, 0f);
+                    force.x = Mathf.Abs(left - rightThumbGraphic.transform.position.x) / rightSize * 2f - 1f;
                 }
             }
         }
-        if (!leftPress) leftThumb.transform.position = leftCenter;
-        if (!rightPress) rightThumb.transform.position = rightCenter;
+        if (!leftPress) leftThumbGraphic.transform.position = leftCenter;
+        if (!rightPress) rightThumbGraphic.transform.position = rightCenter;
         Events.applyForce(force);
     }
+
     public void OnDown(Transform trans)
     {
-      
-    }
-
-    public void OnEnter(Transform trans)
-    {
-    
-    }
-
-    public void OnExit(Transform trans)
-    {
-      
     }
 
     public void OnUp(Transform trans)
     {
-      
+        if (trans.name == "StartKerays")
+        {
+            Events.isPlayerCollecting = true;
+            Events.onStartCollecting(true);
+        }
     }
 }

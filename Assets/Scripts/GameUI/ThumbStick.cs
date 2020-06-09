@@ -9,7 +9,7 @@ public class ThumbStick : UIObject
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
-        image.color = new Color(image.color.r, image.color.g - 0.15f, image.color.b, 0.5f);
+        image.color = Settings.buttonPressed;
     }
     public override void OnPointerUp(PointerEventData eventData)
     {

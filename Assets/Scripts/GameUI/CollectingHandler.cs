@@ -65,7 +65,7 @@ public class CollectingHandler : MonoBehaviour, IPointerDownHandler, IPointerUpH
     private void Awake()
     {
         keraaViela = transform.Find("KeraaViela").GetComponent<TextMeshProUGUI>();
-        Events.onUpdateRemainingAmount += a => keraaViela.text = a > 0 ? $"Kerää vielä\n {a}" : "Rivi kerätty";
+        Events.onUpdateRemainingAmount += a => keraaViela.text = a > 0 ? $"Kerää vielä\n {a}" : "Rivi kerätty\n ";
         images = new Image[2];
         images[0] = transform.GetChild(0).GetChild(0).GetComponent<Image>();
         images[1] = transform.GetChild(1).GetChild(0).GetComponent<Image>();

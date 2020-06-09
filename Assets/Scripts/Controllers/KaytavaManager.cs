@@ -54,7 +54,7 @@ public class KaytavaManager : MonoBehaviour
         rb = player.GetComponent<Rigidbody>();
         seuraava = GameObject.Find("Kerayspaikka").GetComponent<TextMeshProUGUI>();
         etaisyys = GameObject.Find("Etaisyys").GetComponent<TextMeshProUGUI>();
-        canvas = GameObject.Find("UI").GetComponent<Canvas>();
+        canvas = GameObject.Find("MainUI").GetComponent<Canvas>();
         indicator = GameObject.Find("Indicator").transform;
         indicatorOri = indicator.transform.position;
         InitializeNumbers();
@@ -112,7 +112,6 @@ public class KaytavaManager : MonoBehaviour
     }
     private void SeuraavaRivi()
     {
-        Debug.Log($"{rivi}, {keraysera.Length}");
         if (rivi >= keraysera.Length)
         {
             Debug.Log("Poka valmis");
