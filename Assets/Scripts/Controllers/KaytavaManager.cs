@@ -23,7 +23,7 @@ public class KaytavaManager : MonoBehaviour
     float osoiteVali = 3f;
     int kaytava = 1;
     int hyllyPaikka = 124;
-    int rivi = 0;
+    public int rivi = 0;
     bool isCloseToKeraysPoint = false;
     float acceptedVel = 1f, acceptedDist = 2f;
     public KeraysLista[] keraysera;
@@ -40,7 +40,7 @@ public class KaytavaManager : MonoBehaviour
     }
     private void Start()
     {
-        keraysera = Settings.kerayserat[0].keraysLista;
+        keraysera = Settings.keraysera?.keraysLista ?? Settings.kerayserat[0].keraysLista;
         finishFlag = GameObject.Find("FinishFlag").transform.position;
         ApplyLodSettings();
         RandomizeMaterials();
@@ -162,7 +162,6 @@ public class KaytavaManager : MonoBehaviour
         float seconds = Mathf.Floor(time - minutes * 60f);
         float milliseconds = Mathf.Floor((time % 1f) * 10f);
         timer.text = string.Format("{0:00}:{1:00},{2:0}", minutes, seconds, milliseconds);
-
     }
 
     private void InitializeNumbers()

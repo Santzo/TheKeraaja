@@ -16,6 +16,7 @@ public static class Events
     public static Action<float> loadProgress = delegate { };
     public static Action<bool> onStartCollecting = delegate { };
     public static bool pokaValmis = false;
+    public static Action<bool> onPlayerCrossedFinishLine = delegate { };
     public static Action<bool> onCloseToCollectionPoint = delegate { };
     public static Action<int> onUpdateRemainingAmount = delegate { };
     public static Action seuraavaRivi = delegate { };

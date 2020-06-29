@@ -65,8 +65,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1:20:36.781
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7ce423a89f4308d40961cb3528b0321b, type: 2}
-  m_sharedMaterial: {fileID: -7887663693011200780, guid: 7ce423a89f4308d40961cb3528b0321b,
+  m_fontAsset: {fileID: 11400000, guid: 1457d30abb117fe4189283f63b711cd7, type: 2}
+  m_sharedMaterial: {fileID: -3286808222907120852, guid: 1457d30abb117fe4189283f63b711cd7,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -221,8 +221,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Punainen
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7ce423a89f4308d40961cb3528b0321b, type: 2}
-  m_sharedMaterial: {fileID: -7887663693011200780, guid: 7ce423a89f4308d40961cb3528b0321b,
+  m_fontAsset: {fileID: 11400000, guid: 1457d30abb117fe4189283f63b711cd7, type: 2}
+  m_sharedMaterial: {fileID: -3286808222907120852, guid: 1457d30abb117fe4189283f63b711cd7,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -377,8 +377,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Ker\xE4\xE4j\xE4n nimi"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7ce423a89f4308d40961cb3528b0321b, type: 2}
-  m_sharedMaterial: {fileID: -7887663693011200780, guid: 7ce423a89f4308d40961cb3528b0321b,
+  m_fontAsset: {fileID: 11400000, guid: 1457d30abb117fe4189283f63b711cd7, type: 2}
+  m_sharedMaterial: {fileID: -3286808222907120852, guid: 1457d30abb117fe4189283f63b711cd7,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -623,8 +623,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7ce423a89f4308d40961cb3528b0321b, type: 2}
-  m_sharedMaterial: {fileID: -7887663693011200780, guid: 7ce423a89f4308d40961cb3528b0321b,
+  m_fontAsset: {fileID: 11400000, guid: 1457d30abb117fe4189283f63b711cd7, type: 2}
+  m_sharedMaterial: {fileID: -3286808222907120852, guid: 1457d30abb117fe4189283f63b711cd7,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

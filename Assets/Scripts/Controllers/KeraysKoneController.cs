@@ -72,7 +72,6 @@ public class KeraysKoneController : MonoBehaviour
     private void HandleMovement()
     {
         float rpm = wheels[3].rpm;
-        Debug.Log(rb.velocity.sqrMagnitude);
         bool brake = ApplyBrake(movement.y, rpm);
         float kaantyvyys = _kaantyvyys * (1.25f - Mathf.Log(Math.Abs(rpm), _maksimiNopeus));
         float finalKaantyvyys = Mathf.Min(kaantyvyys, 25f);
@@ -86,7 +85,7 @@ public class KeraysKoneController : MonoBehaviour
             }
         }
     }
-   
+
     private void ForceBreak()
     {
         for (int i = 0; i < 4; i++)
@@ -99,7 +98,7 @@ public class KeraysKoneController : MonoBehaviour
     {
         float absRpm = Math.Abs(rpm);
         if (absRpm > _maksimiNopeus) return true;
-      
+
         switch (movement)
         {
             case var _ when movement < 0f:
@@ -130,5 +129,11 @@ public class KeraysKoneController : MonoBehaviour
         obj.transform.localPosition = new Vector3(0f, 0f, 0.1f);
         obj.transform.rotation = transform.rotation;
         obj.transform.localScale = new Vector3(0.88f, 0.88f, 0.88f);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Finish"))
+            Events.onPlayerCrossedFinishLine(Events.pokaValmis);
     }
 }
