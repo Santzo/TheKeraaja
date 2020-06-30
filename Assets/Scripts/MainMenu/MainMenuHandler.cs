@@ -34,9 +34,11 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
         sidePanelOffPos = sidePanel.transform.localPosition;
         nameField.onSubmit.AddListener(name => Settings.NameChange(name));
         nameField.text = Settings.username;
+        Events.ResetEventDelegates();
     }
     private void Start()
     {
+        Debug.Log(Settings.nativeResolution);
         Events.onStartLoading += () => loadingScreen.SetActive(true);
         Events.loadProgress += progress => loadBar.fillAmount = progress;
     }
@@ -62,13 +64,13 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
     public void OnUp(Transform trans)
     {
         trans = trans ?? kerayskone.transform;
-        if (trans.name=="Poistu")
+        if (trans.name == "Poistu")
         {
             quitPanel.SetActive(true);
             return;
         }
         StartCoroutine(MoveSidePanel(trans.name));
-      
+
     }
     IEnumerator MoveSidePanel(string panelName)
     {
@@ -82,6 +84,7 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
             sidePanel.transform.localPosition = Vector2.MoveTowards(sidePanel.transform.localPosition, sidePanelPos, panelMoveSpeed * Time.deltaTime);
             yield return null;
         }
+        Debug.Log("Sidepanel moving done");
         sidePanel.transform.localPosition = sidePanelPos;
     }
 

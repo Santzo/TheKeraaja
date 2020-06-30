@@ -30,10 +30,12 @@ public class MainMenuDropdown : MonoBehaviour, IUIObject
         bgHeight = textLabel.GetComponent<RectTransform>().sizeDelta.y;
         background = textLabel.GetComponent<Image>();
         oriColor = background.color;
-        int value = (int) typeof(Settings).GetField(name.ToLower()).GetValue(null);
+        int value = (int)typeof(Settings).GetField(name.ToLower()).GetValue(null);
         label.text = options[value];
         textHeight = textLabel.GetComponent<RectTransform>().sizeDelta.y - 3f;
+        Debug.Log(Screen.currentResolution);
     }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         var pressed = eventData.pointerEnter.gameObject;

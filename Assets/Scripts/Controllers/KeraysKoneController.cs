@@ -129,11 +129,15 @@ public class KeraysKoneController : MonoBehaviour
         obj.transform.localPosition = new Vector3(0f, 0f, 0.1f);
         obj.transform.rotation = transform.rotation;
         obj.transform.localScale = new Vector3(0.88f, 0.88f, 0.88f);
+        foreach (var trans in obj.GetComponentsInChildren<Transform>())
+        {
+            trans.gameObject.layer = LayerMask.NameToLayer("Kone");
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Finish"))
-            Events.onPlayerCrossedFinishLine(Events.pokaValmis);
+            Events.onPlayerCrossedFinishLine(Events.pokaValmis, KaytavaManager.Instance.time);
     }
 }

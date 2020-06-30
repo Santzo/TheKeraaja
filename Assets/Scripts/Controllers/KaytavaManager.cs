@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class KaytavaManager : MonoBehaviour
 {
-    TextMeshProUGUI timer, seuraava, etaisyys;
+    internal TextMeshProUGUI timer, seuraava, etaisyys;
     Transform indicator, player;
     Rigidbody rb;
     Transform[] kaytavat, aktiivit;
     public Material[] laatikotMaterials;
     LODGroup[] lodGroup;
-    float time = 0f;
+    public float time = 0f;
     Vector3 indicatorOri, finishFlag;
     public static Vector3 currentKeraysTarget;
     Canvas canvas;
@@ -37,9 +37,12 @@ public class KaytavaManager : MonoBehaviour
         {
             kaytavat[i] = transform.GetChild(i);
         }
+        Events.ResetEventDelegates();
     }
     private void Start()
     {
+        Light mainLight = FindObjectOfType<Light>();
+        mainLight.shadows = Settings.shadows == 0 ? LightShadows.Soft : LightShadows.None;
         keraysera = Settings.keraysera?.keraysLista ?? Settings.kerayserat[0].keraysLista;
         finishFlag = GameObject.Find("FinishFlag").transform.position;
         ApplyLodSettings();
@@ -158,10 +161,7 @@ public class KaytavaManager : MonoBehaviour
     private void UpdateTime()
     {
         time += Time.deltaTime;
-        float minutes = Mathf.Floor(time / 60f);
-        float seconds = Mathf.Floor(time - minutes * 60f);
-        float milliseconds = Mathf.Floor((time % 1f) * 10f);
-        timer.text = string.Format("{0:00}:{1:00},{2:0}", minutes, seconds, milliseconds);
+        timer.text = $"{(int)time / 60:00}:{time % 60:00.0}";
     }
 
     private void InitializeNumbers()

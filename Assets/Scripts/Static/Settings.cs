@@ -15,6 +15,7 @@ public static class Settings
     public static int resolution = PlayerPrefs.GetInt("resolution", 0);
     public static string username = PlayerPrefs.GetString("username", "");
     public static Color buttonPressed = new Color32(183, 119, 49, 183);
+    public static Vector2 nativeResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
 
     public static void SaveSetting(string name, int value)
     {
