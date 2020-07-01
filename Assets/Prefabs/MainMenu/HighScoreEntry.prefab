@@ -65,8 +65,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1:20:36.781
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1457d30abb117fe4189283f63b711cd7, type: 2}
-  m_sharedMaterial: {fileID: -3286808222907120852, guid: 1457d30abb117fe4189283f63b711cd7,
+  m_fontAsset: {fileID: 11400000, guid: c2bfa08d21b6c0c4286e6f07f6145509, type: 2}
+  m_sharedMaterial: {fileID: 7091972500214480443, guid: c2bfa08d21b6c0c4286e6f07f6145509,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -221,8 +221,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Punainen
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1457d30abb117fe4189283f63b711cd7, type: 2}
-  m_sharedMaterial: {fileID: -3286808222907120852, guid: 1457d30abb117fe4189283f63b711cd7,
+  m_fontAsset: {fileID: 11400000, guid: c2bfa08d21b6c0c4286e6f07f6145509, type: 2}
+  m_sharedMaterial: {fileID: 7091972500214480443, guid: c2bfa08d21b6c0c4286e6f07f6145509,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -377,8 +377,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Ker\xE4\xE4j\xE4n nimi"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1457d30abb117fe4189283f63b711cd7, type: 2}
-  m_sharedMaterial: {fileID: -3286808222907120852, guid: 1457d30abb117fe4189283f63b711cd7,
+  m_fontAsset: {fileID: 11400000, guid: c2bfa08d21b6c0c4286e6f07f6145509, type: 2}
+  m_sharedMaterial: {fileID: 7091972500214480443, guid: c2bfa08d21b6c0c4286e6f07f6145509,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -623,8 +623,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1457d30abb117fe4189283f63b711cd7, type: 2}
-  m_sharedMaterial: {fileID: -3286808222907120852, guid: 1457d30abb117fe4189283f63b711cd7,
+  m_fontAsset: {fileID: 11400000, guid: c2bfa08d21b6c0c4286e6f07f6145509, type: 2}
+  m_sharedMaterial: {fileID: 7091972500214480443, guid: c2bfa08d21b6c0c4286e6f07f6145509,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

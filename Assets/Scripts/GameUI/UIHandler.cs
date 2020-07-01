@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,8 +9,9 @@ public class UIHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     GameObject startKerays, aloita;
     ValmisHandler valmisHandler;
-
     Transform uiWhileDriving, uiWhileCollecting, pokaValmis, timer;
+    TextMeshProUGUI parasAika;
+
     private void Awake()
     {
         Time.timeScale = 0f;
@@ -21,6 +23,7 @@ public class UIHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         uiWhileCollecting.gameObject.SetActive(false);
         startKerays = uiWhileDriving.Find("StartKerays").gameObject;
         startKerays.SetActive(false);
+        parasAika = pokaValmis.Find("ParasAika").GetComponent<TextMeshProUGUI>();
     }
     private void Start()
     {
@@ -39,12 +42,28 @@ public class UIHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         KaytavaManager.Instance.timer.gameObject.SetActive(false);
         pokaValmis.gameObject.SetActive(true);
         valmisHandler.otsikko.text = finished ? "Keräyserä valmis" : "Keräyserä kesken";
-
-        float minutes = Mathf.Floor(time / 60f);
-        float seconds = Mathf.Floor(time - minutes * 60f);
-        float milliseconds = Mathf.Floor((time % 1f) * 10f);
-        var timerText = $"{(int)time / 60}:{(time) % 60:00.000}";
+        var timerText = Global.FromFloatToTime(time);
         valmisHandler.aika.text = finished ? "Aikasi oli " + timerText + "." : "Jätit tavaroita keräämättä, joten aikaasi ei hyväksytä.";
+        Debug.Log(time);
+        if (!finished) return;
+        if (Settings.username == "")
+        {
+            parasAika.text = "Et ole vielä valinnut käyttäjänimeä. Aikojasi ei kirjata, ennenkuin valitset käyttäjänimen.";
+            return;
+        }
+        if (Settings.keraysera.userBestTime <= 0f || time < Settings.keraysera.userBestTime)
+        {
+            parasAika.text = "Lähetetään tietoja...";
+            string kone = Settings.kerayskone.name == "0" ? "Punainen" : Settings.kerayskone.name == "1" ? "Vihreä" : "Violetti";
+            var score = new HighScoreEntry(Settings.username, time, kone);
+            Settings.keraysera.onNewTimePosted += text => parasAika.text = text;
+            HighScoreManager.Instance.PostNewScore(score, Settings.keraysera);
+        }
+        else
+        {
+            parasAika.text = "Ikävä kyllä et parantanut parasta aikaasi tälle keräyserälle. Paras aikasi tälle keräyserälle on " + Global.FromFloatToTime(Settings.keraysera.userBestTime) + ".";
+        }
+
 
     }
 

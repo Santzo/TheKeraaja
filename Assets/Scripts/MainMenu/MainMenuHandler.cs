@@ -38,7 +38,7 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
     }
     private void Start()
     {
-        Debug.Log(Settings.nativeResolution);
+        Settings.ResetKeraysEraDelegates();
         Events.onStartLoading += () => loadingScreen.SetActive(true);
         Events.loadProgress += progress => loadBar.fillAmount = progress;
     }

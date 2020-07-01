@@ -25,7 +25,7 @@ public class HighScoresHandler : MonoBehaviour, IMainMenuHandler, IDragHandler, 
     {
         for (int i = 0; i < 57; i++)
         {
-            HighScoreEntry entry = new HighScoreEntry { id = i.ToString(), kone = "Punainen", time = 157.1689f, userName = $"User{i}" };
+            HighScoreEntry entry = new HighScoreEntry("Santeri", 1500, "Vihreä");
             HighScoreManager.Instance.currentHighscores.Add(entry);
             var obj = Instantiate(entryPrefab, entries, true);
             obj.transform.localScale = Vector3.one;
@@ -36,6 +36,7 @@ public class HighScoresHandler : MonoBehaviour, IMainMenuHandler, IDragHandler, 
         slider.maxValue = HighScoreManager.Instance.currentHighscores.Count - entriesHeight / separation;
         slider.value = 0;
         slider.onValueChanged.AddListener(value => entries.anchoredPosition = new Vector2(0f, value * separation));
+
     }
     private void OnEnable()
     {

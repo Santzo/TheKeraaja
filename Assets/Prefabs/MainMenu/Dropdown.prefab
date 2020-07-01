@@ -274,8 +274,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "P\xC4\xC4LL\xC4"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1457d30abb117fe4189283f63b711cd7, type: 2}
-  m_sharedMaterial: {fileID: -3286808222907120852, guid: 1457d30abb117fe4189283f63b711cd7,
+  m_fontAsset: {fileID: 11400000, guid: c2bfa08d21b6c0c4286e6f07f6145509, type: 2}
+  m_sharedMaterial: {fileID: 7091972500214480443, guid: c2bfa08d21b6c0c4286e6f07f6145509,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -318,7 +318,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0

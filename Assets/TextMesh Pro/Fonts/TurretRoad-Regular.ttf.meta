@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: efb455564bd44884d92d8797ec051771
+guid: 71b5d0c25d5afee4d8e672a871ce0527
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Alegreya
+  fontName: Turret Road
   fontNames:
-  - Alegreya
+  - Turret Road
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

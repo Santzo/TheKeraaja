@@ -19,5 +19,5 @@ MonoBehaviour:
   - kaytava: 1
     paikka: 124
     maara: 1
-    howManyLeft: 0
-    material: 2
+    howManyLeft: 1
+    material: 1

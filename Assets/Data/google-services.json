@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "361102669095",
+    "firebase_url": "https://thekeraaja.firebaseio.com",
+    "project_id": "thekeraaja",
+    "storage_bucket": "thekeraaja.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361102669095:android:340ce8f6efb72879c72502",
+        "android_client_info": {
+          "package_name": "com.SanteriHakoniemi.TheKeraaja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "361102669095-273mn4ut15v3o132l1skqoe2sgr5dj7r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0uy1I_oyxlGsXEIvygnngdmAdBt1hhJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "361102669095-273mn4ut15v3o132l1skqoe2sgr5dj7r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

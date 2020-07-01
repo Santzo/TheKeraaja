@@ -17,12 +17,14 @@ public class HighScoreManager : MonoBehaviour
     private bool _scoresLoaded;
     private static HighScoreManager _instance;
     public float lastRefresh = 0f;
-
-
+    const string uri = "https://thekeraaja.firebaseio.com/";
     public Action<bool> OnScoresLoaded = delegate { };
     public List<HighScoreEntry> currentHighscores = new List<HighScoreEntry>();
 
-
+    public void Start()
+    {
+        StartCoroutine(GetAuth());
+    }
     public bool ScoresLoaded
     {
         get
@@ -51,77 +53,125 @@ public class HighScoreManager : MonoBehaviour
         }
     }
 
-    public static void GetHighScores()
+    public void GetHighScores(string poka)
     {
         float timeSince = Time.time - Instance.lastRefresh;
-        if (Instance.currentHighscores == null || timeSince > 30f)
+        if (Instance.currentHighscores.Count == 0 || timeSince > 30f)
         {
             Instance.lastRefresh = Time.time;
-            Instance.StartCoroutine(Instance.GetScores());
+            Instance.StartCoroutine(Instance.GetScores(poka));
         }
         else
         {
             Instance.ScoresLoaded = true;
         }
     }
-
-    private IEnumerator PostScore(string newScore)
+    public void PostNewScore(HighScoreEntry score, Keraysera era)
     {
-        var www = UnityWebRequest.Post($"https://testi-f17c1.firebaseio.com/.json?", newScore);
-        www.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(newScore));
-        yield return www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError)
+        StartCoroutine(PostScore(score, era));
+    }
+    public void FindUser(Keraysera era)
+    {
+        StartCoroutine(_FindUser(era));
+    }
+    private IEnumerator PostScore(HighScoreEntry score, Keraysera era)
+    {
+        while (Settings.token == "")
+            yield return null;
+        var id = SystemInfo.deviceUniqueIdentifier;
+        var newScore = JsonUtility.ToJson(score);
+        using (var www = UnityWebRequest.Put(uri + era.pokaName + "/" + id + ".json?auth=" + Settings.token, newScore))
         {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            Debug.Log("Upload successful");
+            www.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(newScore));
+            yield return www.SendWebRequest();
+            if (www.isNetworkError || www.isHttpError)
+            {
+                era.onNewTimePosted("Ei internet-yhteyttä. Aikaasi ei päivitetty online-tietokantaan.");
+            }
+            else
+            {
+                era.onNewTimePosted("Aikasi on päivitetty online-tietokantaan.");
+                era.userBestTime = score.time;
+            }
         }
     }
 
     private IEnumerator GetAuth()
     {
         var userData = "{'returnSecureToken': 'true'}";
-        string api = ""; 
-        api = Resources.Load<TextAsset>("info")?.text;
-        var www = UnityWebRequest.Post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + api, userData);
+        // string api = "";
+        var apiKey = Resources.Load<TextAsset>("Keraysera")?.text;
+        var www = UnityWebRequest.Post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + apiKey, userData);
+        www.SetRequestHeader("Content-Type", "application/json");
         www.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(userData));
         yield return www.SendWebRequest();
         if (www.isNetworkError || www.isHttpError)
         {
             Debug.Log("aa" + www.error);
+            Debug.Log(www.downloadHandler.text);
             yield return false;
         }
         else
         {
             string result = www.downloadHandler.text;
             var aa = JsonUtility.FromJson<IdToken>(result);
-            //StartCoroutine(GetScores(aa.idToken));
+            Settings.token = aa.idToken;
             yield return true;
         }
     }
-
-    private IEnumerator GetScores()
+    private IEnumerator _FindUser(Keraysera era)
     {
-        var www = UnityWebRequest.Get($"https://testi-f17c1.firebaseio.com/.json");
-        www.SetRequestHeader("Content-Type", "application/json");
-        var request = www.SendWebRequest();
-        yield return request;
-        if (www.isNetworkError || www.isHttpError)
+        while (Settings.token == "")
+            yield return null;
+        var id = SystemInfo.deviceUniqueIdentifier;
+        var requestUri = uri + era.pokaName + "/" + id + "/time.json" + "?shallow=true" + "&auth=" + Settings.token;
+        Debug.Log(requestUri);
+        using (var www = UnityWebRequest.Get(requestUri))
         {
-            Debug.Log(www.error);
-            ScoresLoaded = false;
-            yield return false;
+            www.SetRequestHeader("Content-Type", "application/json");
+            var request = www.SendWebRequest();
+            yield return request;
+            if (www.isNetworkError || www.isHttpError)
+            {
+                // Debug.Log(www.error);
+                // Debug.Log(www.downloadHandler.text);
+                era.userBestTime = -2f;
+            }
+            else
+            {
+                string result = www.downloadHandler.text;
+                Debug.Log(result);
+                if (result == "null") era.userBestTime = 0f;
+                else era.userBestTime = float.Parse(result, CultureInfo.InvariantCulture.NumberFormat);
+                // var useri = JsonUtility.FromJson<HighScoreEntry>(result);
+                // Debug.Log(useri.id == null);
+            }
         }
-        else
+    }
+    private IEnumerator GetScores(string poka)
+    {
+        while (Settings.token == "")
+            yield return null;
+        string orderBy = "\"time\"";
+        Debug.Log(orderBy);
+        using (var www = UnityWebRequest.Get(uri + poka + ".json" + "?orderBy=" + orderBy + "&limitToLast=3" + "&auth=" + Settings.token))
         {
-            string result = www.downloadHandler.text;
-            Dictionary<string, HighScoreEntry> entryDict = JsonConvert.DeserializeObject<Dictionary<string, HighScoreEntry>>(result);
-            currentHighscores = entryDict.Select(x => x.Value).OrderByDescending(x => x.time).ToList();
-          
-            ScoresLoaded = true;
-            yield return true;
+            www.SetRequestHeader("Content-Type", "application/json");
+            var request = www.SendWebRequest();
+            yield return request;
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+                Debug.Log(www.downloadHandler.text);
+                ScoresLoaded = false;
+            }
+            else
+            {
+                string result = www.downloadHandler.text;
+                Dictionary<string, HighScoreEntry> entryDict = JsonConvert.DeserializeObject<Dictionary<string, HighScoreEntry>>(result);
+                currentHighscores = entryDict.Select(x => x.Value).ToList();
+                ScoresLoaded = true;
+            }
         }
     }
 

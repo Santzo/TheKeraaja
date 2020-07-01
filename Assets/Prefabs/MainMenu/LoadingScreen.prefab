@@ -65,9 +65,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Ladataan ker\xE4yser\xE4\xE4"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1457d30abb117fe4189283f63b711cd7, type: 2}
-  m_sharedMaterial: {fileID: -3286808222907120852, guid: 1457d30abb117fe4189283f63b711cd7,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c2bfa08d21b6c0c4286e6f07f6145509, type: 2}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -144,7 +143,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_subTextObjects:
   - {fileID: 0}
   - {fileID: 0}

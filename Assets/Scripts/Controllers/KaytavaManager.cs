@@ -26,7 +26,7 @@ public class KaytavaManager : MonoBehaviour
     public int rivi = 0;
     bool isCloseToKeraysPoint = false;
     float acceptedVel = 1f, acceptedDist = 2f;
-    public KeraysLista[] keraysera;
+    public KeraysLista[] keraysLista;
     public static KaytavaManager Instance;
 
     private void Awake()
@@ -41,16 +41,17 @@ public class KaytavaManager : MonoBehaviour
     }
     private void Start()
     {
+        Settings.ResetKeraysEraDelegates();
         Light mainLight = FindObjectOfType<Light>();
         mainLight.shadows = Settings.shadows == 0 ? LightShadows.Soft : LightShadows.None;
-        keraysera = Settings.keraysera?.keraysLista ?? Settings.kerayserat[0].keraysLista;
+        keraysLista = Settings.keraysera?.keraysLista ?? Settings.kerayserat[0].keraysLista;
         finishFlag = GameObject.Find("FinishFlag").transform.position;
         ApplyLodSettings();
         RandomizeMaterials();
         Events.seuraavaRivi += SeuraavaRivi;
-        for (int i = 0; i < keraysera.Length; i++)
+        for (int i = 0; i < keraysLista.Length; i++)
         {
-            keraysera[i].howManyLeft = keraysera[i].maara;
+            keraysLista[i].howManyLeft = keraysLista[i].maara;
         }
         timer = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
         player = GameObject.Find("Kerayskone").transform;
@@ -90,10 +91,10 @@ public class KaytavaManager : MonoBehaviour
             aktiivit[i].GetComponent<MeshRenderer>().sharedMaterial = laatikotMaterials[rnd];
             aktiivit[i + 1].GetComponent<MeshRenderer>().sharedMaterial = laatikotMaterials[rnd];
         }
-        for (int i = 0; i < keraysera.Length; i++)
+        for (int i = 0; i < keraysLista.Length; i++)
         {
-            int a = KeraysEraMatIndex(keraysera[i].kaytava, keraysera[i].paikka);
-            keraysera[i].material = materiaalit[a];
+            int a = KeraysEraMatIndex(keraysLista[i].kaytava, keraysLista[i].paikka);
+            keraysLista[i].material = materiaalit[a];
         }
     }
     int KeraysEraMatIndex(int kaytava, int osoite)
@@ -115,15 +116,15 @@ public class KaytavaManager : MonoBehaviour
     }
     private void SeuraavaRivi()
     {
-        if (rivi >= keraysera.Length)
+        if (rivi >= keraysLista.Length)
         {
             Debug.Log("Poka valmis");
             Events.pokaValmis = true;
             PlaceIndicator();
             return;
         }
-        Events.currentRivi = keraysera[rivi];
-        PlaceIndicator(keraysera[rivi].kaytava, keraysera[rivi].paikka);
+        Events.currentRivi = keraysLista[rivi];
+        PlaceIndicator(keraysLista[rivi].kaytava, keraysLista[rivi].paikka);
         rivi++;
     }
 
