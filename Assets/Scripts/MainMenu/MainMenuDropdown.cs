@@ -33,7 +33,6 @@ public class MainMenuDropdown : MonoBehaviour, IUIObject
         int value = (int)typeof(Settings).GetField(name.ToLower()).GetValue(null);
         label.text = options[value];
         textHeight = textLabel.GetComponent<RectTransform>().sizeDelta.y - 3f;
-        Debug.Log(Screen.currentResolution);
     }
 
     public void OnPointerDown(PointerEventData eventData)

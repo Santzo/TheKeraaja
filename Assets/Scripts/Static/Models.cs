@@ -24,6 +24,12 @@ public class HighScoreEntry
     public float time;
     public string kone;
 }
+public enum NetWorkResponse
+{
+    Success,
+    NoData,
+    NoConnection
+}
 
 
 

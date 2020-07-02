@@ -44,27 +44,57 @@ public class UIHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         valmisHandler.otsikko.text = finished ? "Keräyserä valmis" : "Keräyserä kesken";
         var timerText = Global.FromFloatToTime(time);
         valmisHandler.aika.text = finished ? "Aikasi oli " + timerText + "." : "Jätit tavaroita keräämättä, joten aikaasi ei hyväksytä.";
-        Debug.Log(time);
+        parasAika.text = "";
         if (!finished) return;
+        parasAika.text = "Lähetetään tietoja...";
         if (Settings.username == "")
         {
             parasAika.text = "Et ole vielä valinnut käyttäjänimeä. Aikojasi ei kirjata, ennenkuin valitset käyttäjänimen.";
             return;
         }
-        if (Settings.keraysera.userBestTime <= 0f || time < Settings.keraysera.userBestTime)
+        Settings.keraysera.onNewTimePosted += (res, text) => parasAika.text = text;
+
+        if (Settings.keraysera.userBestTime < 0f || Settings.keraysera.userBestTime > 0f && time < Settings.keraysera.userBestTime)
         {
-            parasAika.text = "Lähetetään tietoja...";
-            string kone = Settings.kerayskone.name == "0" ? "Punainen" : Settings.kerayskone.name == "1" ? "Vihreä" : "Violetti";
-            var score = new HighScoreEntry(Settings.username, time, kone);
-            Settings.keraysera.onNewTimePosted += text => parasAika.text = text;
-            HighScoreManager.Instance.PostNewScore(score, Settings.keraysera);
+            PostNewTime(time);
         }
-        else
+        else if (Settings.keraysera.userBestTime == 0f)
+        {
+            Debug.Log("Check for new time");
+            HighScoreManager.Instance.FindUser(Settings.keraysera);
+            Settings.keraysera.onUserBestTimeUpdated += (res, oldTime) => CheckForNewTime(res, time, oldTime);
+        }
+        else if (Settings.keraysera.userBestTime > 0f && time >= Settings.keraysera.userBestTime)
         {
             parasAika.text = "Ikävä kyllä et parantanut parasta aikaasi tälle keräyserälle. Paras aikasi tälle keräyserälle on " + Global.FromFloatToTime(Settings.keraysera.userBestTime) + ".";
         }
+    }
 
+    private void CheckForNewTime(NetWorkResponse res, float newTime, float oldTime)
+    {
+        Debug.Log(res + " " + newTime + " " + oldTime);
+        if (res == NetWorkResponse.NoConnection)
+        {
+            parasAika.text = "Ei internet-yhteyttä. Aikaasi ei päivitetty online-tietokantaan.";
+            return;
+        }
+        else if (res == NetWorkResponse.NoData)
+        {
+            PostNewTime(newTime);
+        }
+        else if (res == NetWorkResponse.Success)
+        {
+            if (newTime < oldTime) PostNewTime(newTime);
+            else parasAika.text = "Ikävä kyllä et parantanut parasta aikaasi tälle keräyserälle. Paras aikasi tälle keräyserälle on " + Global.FromFloatToTime(Settings.keraysera.userBestTime) + ".";
+        }
+    }
 
+    private void PostNewTime(float time)
+    {
+        string kone = Settings.kerayskone.name == "0" ? "Punainen" : Settings.kerayskone.name == "1" ? "Vihreä" : "Violetti";
+        var score = new HighScoreEntry(Settings.username, time, kone);
+
+        HighScoreManager.Instance.PostNewScore(score, Settings.keraysera);
     }
 
     private void OnDisable()

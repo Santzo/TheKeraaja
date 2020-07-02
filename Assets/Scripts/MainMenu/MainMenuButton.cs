@@ -14,7 +14,7 @@ public class MainMenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     void Awake()
     {
         menuHandler = GetComponentInParent<IMainMenuHandler>();
-        if (menuHandler==null)
+        if (menuHandler == null)
         {
             Debug.Log("No Main Menu handler found for " + name);
         }

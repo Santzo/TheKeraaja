@@ -274,8 +274,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "P\xC4\xC4LL\xC4"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c2bfa08d21b6c0c4286e6f07f6145509, type: 2}
-  m_sharedMaterial: {fileID: 7091972500214480443, guid: c2bfa08d21b6c0c4286e6f07f6145509,
+  m_fontAsset: {fileID: 11400000, guid: b5fdfb122a61eea4da0c0a9acaef6a6d, type: 2}
+  m_sharedMaterial: {fileID: 4148976091985103653, guid: b5fdfb122a61eea4da0c0a9acaef6a6d,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -301,8 +301,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 56
-  m_fontSizeBase: 56
+  m_fontSize: 38
+  m_fontSizeBase: 38
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

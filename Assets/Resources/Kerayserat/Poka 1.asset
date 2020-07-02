@@ -12,12 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a1d2926f90dfa458ad1fb09619b37c, type: 3}
   m_Name: Poka 1
   m_EditorClassIdentifier: 
-  pokaName: Pikkupoka
+  pokaName: Nopea
   description: "Todella nopea alle minuutin ker\xE4yser\xE4. Vain muutama ker\xE4tt\xE4v\xE4
     rivi, eik\xE4 muita ker\xE4\xE4ji\xE4 k\xE4yt\xE4vill\xE4."
   keraysLista:
   - kaytava: 1
     paikka: 124
     maara: 1
-    howManyLeft: 1
-    material: 1
+    howManyLeft: 0
+    material: 0
+  isHighScoreListUpdated: 1
+  timeSinceLastListUpdate: 86.91007
+  highScoreList:
+  - userName: Santtu
+    time: 28.09864
+    kone: Punainen

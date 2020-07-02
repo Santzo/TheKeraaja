@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1966789666783672229}
   - component: {fileID: 7648269293836383548}
-  - component: {fileID: 1644238138275070788}
-  - component: {fileID: -6096803748131880426}
+  - component: {fileID: 4216080076117872989}
+  - component: {fileID: 4000818981427139240}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.2199707}
-  m_SizeDelta: {x: 444.6, y: 82.81}
+  m_SizeDelta: {x: 454.5, y: 85}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &7648269293836383548
 CanvasRenderer:
@@ -47,7 +47,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1199668562640138060}
   m_CullTransparentMesh: 0
---- !u!114 &1644238138275070788
+--- !u!114 &4216080076117872989
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-6096803748131880426
+--- !u!114 &4000818981427139240
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,8 +153,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "P\xC4\xC4LL\xC4"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c2bfa08d21b6c0c4286e6f07f6145509, type: 2}
-  m_sharedMaterial: {fileID: 7091972500214480443, guid: c2bfa08d21b6c0c4286e6f07f6145509,
+  m_fontAsset: {fileID: 11400000, guid: b5fdfb122a61eea4da0c0a9acaef6a6d, type: 2}
+  m_sharedMaterial: {fileID: 4148976091985103653, guid: b5fdfb122a61eea4da0c0a9acaef6a6d,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -180,8 +180,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 56
-  m_fontSizeBase: 56
+  m_fontSize: 38
+  m_fontSizeBase: 38
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a1d2926f90dfa458ad1fb09619b37c, type: 3}
   m_Name: Poka 2
   m_EditorClassIdentifier: 
-  pokaName: Normipoka
+  pokaName: Normaali
   description: "Peruspoka, jossa kohtalainen m\xE4\xE4r\xE4 ker\xE4tt\xE4v\xE4\xE4,
     ja jonkun verran muita ker\xE4\xE4ji\xE4 k\xE4yt\xE4vill\xE4."
   keraysLista:
@@ -36,3 +36,6 @@ MonoBehaviour:
     maara: 5
     howManyLeft: 0
     material: 0
+  isHighScoreListUpdated: 0
+  timeSinceLastListUpdate: 0
+  highScoreList: []

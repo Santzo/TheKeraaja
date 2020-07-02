@@ -84,7 +84,6 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
             sidePanel.transform.localPosition = Vector2.MoveTowards(sidePanel.transform.localPosition, sidePanelPos, panelMoveSpeed * Time.deltaTime);
             yield return null;
         }
-        Debug.Log("Sidepanel moving done");
         sidePanel.transform.localPosition = sidePanelPos;
     }
 
