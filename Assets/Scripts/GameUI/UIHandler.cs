@@ -44,8 +44,26 @@ public class UIHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         valmisHandler.otsikko.text = finished ? "Keräyserä valmis" : "Keräyserä kesken";
         var timerText = Global.FromFloatToTime(time);
         valmisHandler.aika.text = finished ? "Aikasi oli " + timerText + "." : "Jätit tavaroita keräämättä, joten aikaasi ei hyväksytä.";
-        parasAika.text = "";
-        if (!finished) return;
+
+        if (!finished)
+        {
+            if (Settings.keraysera.userBestTime > 0f) parasAika.text = "Paras aikasi on " + Settings.keraysera.userBestTime;
+            else if (Settings.keraysera.userBestTime == 0f)
+            {
+                HighScoreManager.Instance.FindUser(Settings.keraysera);
+                Settings.keraysera.onUserBestTimeUpdated += (res, oldTime) =>
+                {
+                    if (oldTime > 0f) parasAika.text = "Paras aikasi on " + Global.FromFloatToTime(oldTime);
+                    else parasAika.text = "Sinulla ei ole vielä aikaa tälle keräyserälle.";
+                };
+            }
+            else if (Settings.keraysera.userBestTime < 0f)
+            {
+                parasAika.text = "Sinulla ei ole vielä aikaa tälle keräyserälle.";
+            }
+            return;
+        }
+
         parasAika.text = "Lähetetään tietoja...";
         if (Settings.username == "")
         {
@@ -60,7 +78,6 @@ public class UIHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
         else if (Settings.keraysera.userBestTime == 0f)
         {
-            Debug.Log("Check for new time");
             HighScoreManager.Instance.FindUser(Settings.keraysera);
             Settings.keraysera.onUserBestTimeUpdated += (res, oldTime) => CheckForNewTime(res, time, oldTime);
         }
@@ -72,7 +89,6 @@ public class UIHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void CheckForNewTime(NetWorkResponse res, float newTime, float oldTime)
     {
-        Debug.Log(res + " " + newTime + " " + oldTime);
         if (res == NetWorkResponse.NoConnection)
         {
             parasAika.text = "Ei internet-yhteyttä. Aikaasi ei päivitetty online-tietokantaan.";

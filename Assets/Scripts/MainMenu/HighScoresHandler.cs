@@ -62,6 +62,7 @@ public class HighScoresHandler : MonoBehaviour, IMainMenuHandler, IDragHandler, 
     }
     private void ShowHighScores(NetWorkResponse res = NetWorkResponse.Success)
     {
+
         entries.anchoredPosition = Vector2.zero;
         if (res == NetWorkResponse.Success)
         {

@@ -6,12 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class ValmisHandler : MonoBehaviour, IMainMenuHandler
 {
-    public TextMeshProUGUI otsikko, aika;
+    internal TextMeshProUGUI otsikko, aika;
+    internal GameObject highScores;
 
     private void Awake()
     {
         otsikko = transform.Find("Otsikko").GetComponent<TextMeshProUGUI>();
         aika = transform.Find("Aika").GetComponent<TextMeshProUGUI>();
+    }
+    private void Start()
+    {
+        highScores = transform.parent.Find("HighScoresPanel").gameObject;
+        highScores.SetActive(false);
     }
     public void OnDown(Transform trans)
     {
@@ -27,6 +33,9 @@ public class ValmisHandler : MonoBehaviour, IMainMenuHandler
             case "Restart":
                 Time.timeScale = 1f;
                 SceneManager.LoadScene("MainGame");
+                break;
+            case "HighScores":
+                highScores.SetActive(true);
                 break;
         }
     }

@@ -110,14 +110,22 @@ public class HighScoreManager : MonoBehaviour
             {
                 string result = www.downloadHandler.text;
                 if (result == "null") era.onUserBestTimeUpdated(NetWorkResponse.NoData, -1f);
-                else era.onUserBestTimeUpdated(NetWorkResponse.Success, float.Parse(result, CultureInfo.InvariantCulture.NumberFormat));
+                else
+                {
+                    var _time = float.Parse(result, CultureInfo.InvariantCulture.NumberFormat);
+                    era.userBestTime = _time;
+                    era.onUserBestTimeUpdated(NetWorkResponse.Success, _time);
+                }
             }
         }
     }
     private IEnumerator GetScores(Keraysera era)
     {
         while (Settings.token == "")
+        {
+            Debug.Log("Waiting for token...");
             yield return null;
+        }
         string orderBy = "\"time\"";
         using (var www = UnityWebRequest.Get(uri + era.pokaName + ".json" + "?orderBy=" + orderBy + "&limitToFirst=100" + "&auth=" + Settings.token))
         {

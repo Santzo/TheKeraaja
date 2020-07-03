@@ -35,10 +35,10 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
         nameField.onSubmit.AddListener(name => Settings.NameChange(name));
         nameField.text = Settings.username;
         Events.ResetEventDelegates();
+        Settings.ResetKeraysEraDelegates();
     }
     private void Start()
     {
-        Settings.ResetKeraysEraDelegates();
         Events.onStartLoading += () => loadingScreen.SetActive(true);
         Events.loadProgress += progress => loadBar.fillAmount = progress;
     }

@@ -38,10 +38,11 @@ public class KaytavaManager : MonoBehaviour
             kaytavat[i] = transform.GetChild(i);
         }
         Events.ResetEventDelegates();
+        Settings.ResetKeraysEraDelegates();
     }
     private void Start()
     {
-        Settings.ResetKeraysEraDelegates();
+
         Light mainLight = FindObjectOfType<Light>();
         mainLight.shadows = Settings.shadows == 0 ? LightShadows.Soft : LightShadows.None;
         keraysLista = Settings.keraysera?.keraysLista ?? Settings.kerayserat[0].keraysLista;
