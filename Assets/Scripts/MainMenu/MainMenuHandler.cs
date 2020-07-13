@@ -26,6 +26,7 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
         kerayskone = sidePanel.transform.Find("Kerayskone").gameObject;
         kerayskone.SetActive(false);
 
+        Settings.SetResolution(Settings.resolution);
         loadingScreen = transform.parent.Find("LoadingScreen").gameObject;
         loadBar = loadingScreen.transform.Find("LatausBarFront").GetComponent<Image>();
         quitPanel = transform.parent.Find("QuitPanel").gameObject;

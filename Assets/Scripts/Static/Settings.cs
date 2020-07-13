@@ -15,14 +15,17 @@ public static class Settings
     public static int resolution = PlayerPrefs.GetInt("resolution", 0);
     public static string username = PlayerPrefs.GetString("username", "");
     public static Color buttonPressed = new Color32(183, 119, 49, 183);
-    public static Vector2 nativeResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
+    // public static Vector2 nativeResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
     public static string token = "";
 
     public static void SaveSetting(string name, int value)
     {
         typeof(Settings).GetField(name).SetValue(null, value);
         PlayerPrefs.SetInt(name, value);
-        Debug.Log(sound);
+        if (name == "resolution")
+        {
+            SetResolution(value);
+        }
     }
     public static void NameChange(string newName)
     {
@@ -35,6 +38,21 @@ public static class Settings
         for (int i = 0; i < kerayserat.Length; i++)
         {
             kerayserat[i].ResetDelegates();
+        }
+    }
+    public static void SetResolution(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                Screen.SetResolution(1920, 1080, FullScreenMode.ExclusiveFullScreen);
+                break;
+            case 1:
+                Screen.SetResolution(1280, 720, FullScreenMode.ExclusiveFullScreen);
+                break;
+            default:
+                Screen.SetResolution(960, 540, FullScreenMode.ExclusiveFullScreen);
+                break;
         }
     }
 }

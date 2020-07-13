@@ -14,7 +14,7 @@ public class HighScoresHandler : MonoBehaviour, IMainMenuHandler, IDragHandler, 
     public GameObject lataus;
     public GameObject entryPrefab;
     private HighScorePool[] highScorePool;
-    float separation = 73f;
+    float separation = 73f, updateHighScores = 30f;
     float entriesHeight;
     Vector2 oldMousePos, currentMousePos;
     private class HighScorePool
@@ -49,7 +49,7 @@ public class HighScoresHandler : MonoBehaviour, IMainMenuHandler, IDragHandler, 
             Settings.keraysera.isHighScoreListUpdated = false;
             HighScoreManager.Instance.GetHighScores(Settings.keraysera);
         }
-        else if (Settings.keraysera.highScoreList.Count > 0 && Time.realtimeSinceStartup - Settings.keraysera.timeSinceLastListUpdate > 20f)
+        else if (Settings.keraysera.highScoreList.Count > 0 && Time.realtimeSinceStartup - Settings.keraysera.timeSinceLastListUpdate > updateHighScores)
         {
             Settings.keraysera.isHighScoreListUpdated = false;
             HighScoreManager.Instance.GetHighScores(Settings.keraysera);

@@ -30,6 +30,8 @@ public class TrukkiManager : MonoBehaviour
             trukit[i].trukki = Instantiate(trukki, new Vector3(xPos, 0f, zPos), Quaternion.identity);
             trukit[i].trukkiRB = trukit[i].trukki.GetComponent<Rigidbody>();
             trukit[i].target = Random.Range(0, 2);
+            var rotation = Quaternion.LookRotation(paths[i].points[trukit[i].target] - trukit[i].trukki.position, Vector3.up);
+            trukit[i].trukki.rotation = rotation;
         }
     }
     private void FixedUpdate()
@@ -37,24 +39,26 @@ public class TrukkiManager : MonoBehaviour
         for (int i = 0; i < trukitLength; i++)
         {
             var diff = paths[i].points[trukit[i].target] - trukit[i].trukki.position;
-            var direction = diff.normalized;
-            trukit[i].trukkiRB.AddForce(trukit[i].trukki.forward * trukkiforce - trukit[i].trukkiRB.velocity);
+
             var lookRotation = Quaternion.LookRotation(diff, Vector3.up);
             var moveRotation = Quaternion.Lerp(trukit[i].trukkiRB.rotation, lookRotation, 1.5f * Time.fixedDeltaTime);
-            trukit[i].trukkiRB.MoveRotation(moveRotation);
+            var angle = Quaternion.Angle(lookRotation, trukit[i].trukkiRB.rotation);
             float dist = diff.sqrMagnitude;
-            if (dist >= 50f && dist < 500f)
+            if (angle > 5f)
+                trukit[i].trukkiRB.drag = 5f;
+            else
+                trukit[i].trukkiRB.drag = 0f;
+            if (dist < 250f && angle <= 5f)
             {
-                trukkiforce = Mathf.Lerp(trukkiforce, 180000f, 1.5f * Time.fixedDeltaTime);
+                var drag = (250f - dist) * 0.006f;
+                trukit[i].trukkiRB.drag = drag;
             }
-            else if (dist <= 50f)
+            trukit[i].trukkiRB.MoveRotation(moveRotation);
+            var direction = diff.normalized;
+            trukit[i].trukkiRB.AddForce(trukit[i].trukki.forward * trukkiforce - trukit[i].trukkiRB.velocity);
+            if (dist <= 25f)
             {
                 trukit[i].target = trukit[i].target == 0 ? 1 : 0;
-                trukkiforce = 0f;
-            }
-            else
-            {
-                trukkiforce = Mathf.Lerp(trukkiforce, 200000f, 2f * Time.fixedDeltaTime);
             }
         }
 

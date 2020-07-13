@@ -31,6 +31,7 @@ public class MainMenuDropdown : MonoBehaviour, IUIObject
         background = textLabel.GetComponent<Image>();
         oriColor = background.color;
         int value = (int)typeof(Settings).GetField(name.ToLower()).GetValue(null);
+        if (value >= options.Length || value < 0) value = 0;
         label.text = options[value];
         textHeight = textLabel.GetComponent<RectTransform>().sizeDelta.y - 3f;
     }

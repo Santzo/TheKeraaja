@@ -18,6 +18,7 @@ public class HighScoreManager : MonoBehaviour
     string id;
     private static HighScoreManager _instance;
     public float lastRefresh = 0f;
+    private float tokenLastFetched, tokenFetchUpdateLimit = 3000f;
     const string uri = "https://thekeraaja.firebaseio.com/";
     public Action<bool> OnScoresLoaded = delegate { };
     public List<HighScoreEntry> currentHighscores = new List<HighScoreEntry>();
@@ -58,6 +59,8 @@ public class HighScoreManager : MonoBehaviour
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)
             {
+                if (Time.realtimeSinceStartup - tokenLastFetched > tokenFetchUpdateLimit)
+                    StartCoroutine(GetAuth());
                 era.onNewTimePosted(NetWorkResponse.NoConnection, "Ei internet-yhteyttä. Aikaasi ei päivitetty online-tietokantaan.");
             }
             else
@@ -70,8 +73,8 @@ public class HighScoreManager : MonoBehaviour
 
     private IEnumerator GetAuth()
     {
+        Settings.token = "";
         var userData = "{'returnSecureToken': 'true'}";
-        // string api = "";
         var apiKey = Resources.Load<TextAsset>("Keraysera")?.text;
         var www = UnityWebRequest.Post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + apiKey, userData);
         www.SetRequestHeader("Content-Type", "application/json");
@@ -88,9 +91,11 @@ public class HighScoreManager : MonoBehaviour
             string result = www.downloadHandler.text;
             var aa = JsonUtility.FromJson<IdToken>(result);
             Settings.token = aa.idToken;
+            tokenLastFetched = Time.realtimeSinceStartup;
             yield return true;
         }
     }
+
     private IEnumerator _FindUser(Keraysera era)
     {
         while (Settings.token == "")
@@ -104,6 +109,8 @@ public class HighScoreManager : MonoBehaviour
             yield return request;
             if (www.isNetworkError || www.isHttpError)
             {
+                if (Time.realtimeSinceStartup - tokenLastFetched > tokenFetchUpdateLimit)
+                    StartCoroutine(GetAuth());
                 era.onUserBestTimeUpdated(NetWorkResponse.NoConnection, -2f);
             }
             else
@@ -122,10 +129,7 @@ public class HighScoreManager : MonoBehaviour
     private IEnumerator GetScores(Keraysera era)
     {
         while (Settings.token == "")
-        {
-            Debug.Log("Waiting for token...");
             yield return null;
-        }
         string orderBy = "\"time\"";
         using (var www = UnityWebRequest.Get(uri + era.pokaName + ".json" + "?orderBy=" + orderBy + "&limitToFirst=100" + "&auth=" + Settings.token))
         {
@@ -135,9 +139,9 @@ public class HighScoreManager : MonoBehaviour
             yield return request;
             if (www.isNetworkError || www.isHttpError)
             {
+                if (Time.realtimeSinceStartup - tokenLastFetched > tokenFetchUpdateLimit)
+                    StartCoroutine(GetAuth());
                 era.onHighScoreListLoaded(NetWorkResponse.NoConnection);
-                Debug.Log(www.error);
-                Debug.Log(www.downloadHandler.text);
             }
             else
             {
