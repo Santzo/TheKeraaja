@@ -77,4 +77,5 @@ public class CollectingHandler : MonoBehaviour, IPointerDownHandler, IPointerUpH
         Settings.debugText.text = tapSpeed.ToString();
         Events.onTapMovementSpeed(tapSpeed);
     }
+
 }

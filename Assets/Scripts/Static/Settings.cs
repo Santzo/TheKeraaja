@@ -10,12 +10,12 @@ public static class Settings
     public static Keraysera[] kerayserat = Resources.LoadAll<Keraysera>("Kerayserat");
     public static Keraysera keraysera = kerayserat[0];
     public static Kerayskone[] kerayskoneet = Resources.LoadAll<Kerayskone>("Kerayskoneet");
-    public static Kerayskone kerayskone = kerayskoneet[2];
+    public static Kerayskone kerayskone = kerayskoneet[1];
     public static TextMeshProUGUI debugText;
     public static int resolution = PlayerPrefs.GetInt("resolution", 0);
     public static string username = PlayerPrefs.GetString("username", "");
     public static Color buttonPressed = new Color32(183, 119, 49, 183);
-    // public static Vector2 nativeResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
+    public static Vector2 nativeResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
     public static string token = "";
 
     public static void SaveSetting(string name, int value)
@@ -45,13 +45,13 @@ public static class Settings
         switch (index)
         {
             case 0:
-                Screen.SetResolution(1920, 1080, FullScreenMode.ExclusiveFullScreen);
+                Screen.SetResolution((int)nativeResolution.x, (int)nativeResolution.y, FullScreenMode.ExclusiveFullScreen);
                 break;
             case 1:
-                Screen.SetResolution(1280, 720, FullScreenMode.ExclusiveFullScreen);
+                Screen.SetResolution((int)(nativeResolution.x * 0.75f), (int)(nativeResolution.y * 0.75f), FullScreenMode.ExclusiveFullScreen);
                 break;
             default:
-                Screen.SetResolution(960, 540, FullScreenMode.ExclusiveFullScreen);
+                Screen.SetResolution((int)(nativeResolution.x * 0.5f), (int)(nativeResolution.y * 0.5f), FullScreenMode.ExclusiveFullScreen);
                 break;
         }
     }
